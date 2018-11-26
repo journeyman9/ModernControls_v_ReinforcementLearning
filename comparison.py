@@ -19,12 +19,13 @@ LABEL = 'trailer'
 K = np.array([-3.7896, 12.8011, -1.0])
 DEMONSTRATIONS = 2
 
-def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log): 
+def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, start_rendering): 
     done = False
     s = env.reset()
+    q0 = env.q0
+    qg = env.qg
     total_reward = 0.0
     steps = 0
-    start_rendering = False
     while not done:
         if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
             command = input()
@@ -55,15 +56,23 @@ def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log):
         s = s_
         total_reward += r
         steps += 1
-    return total_reward, info
+    return total_reward, info, q0, qg, start_rendering
 
 def test_rl(env, policy, state, train_phase, sess, 
-            rl_psi_1_log, rl_psi_2_log, rl_d2_log, rl_t_log):
+            rl_psi_1_log, rl_psi_2_log, rl_d2_log, rl_t_log, q0, qg, start_rendering):
     done = False
+    q0_ = q0.copy()
+    qg_ = qg.copy()
+    if env.v < 0:
+        q0_[2] -= np.pi
+        qg_[2] -= np.pi
+    q0_[2] = np.degrees(q0_[2])
+    qg_[2] = np.degrees(qg_[2])
+    env.manual_course(q0_, qg_)
     s = env.reset()
+    env.manual_track = False
     total_reward = 0.0
     steps = 0
-    start_rendering = False
     while not done:
         if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
             command = input()
@@ -106,7 +115,7 @@ def abs_max(x):
 
 if __name__ == '__main__':
     env = gym.make('TruckBackerUpper-v0').unwrapped
-    #env.manual_velocity(-25.0)
+    env.manual_velocity(-25.0)
     for seed_idx in range(len(SEEDS)):
         checkpoint_path = "./models/" + LABEL + "_seed_" + str(
                           SEEDS[seed_idx]) + "/my_ddpg.ckpt"
@@ -152,6 +161,7 @@ if __name__ == '__main__':
             train_phase = sess.graph.get_tensor_by_name('Actor/train_phase_actor:0')
             learned_policy = sess.graph.get_tensor_by_name(
                                     'Actor/pi_online_network/pi_hat/Mul_4:0')
+            start_rendering = False
 
             for demo in range(DEMONSTRATIONS):
                 ## Modern Controls
@@ -159,8 +169,9 @@ if __name__ == '__main__':
                 mc_psi_2_log = []
                 mc_d2_log = []
                 mc_t_log = []
-                r, info = test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, 
-                            mc_d2_log)
+                r, info, q0, qg, start_rendering = test_mc(
+                                env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, 
+                                mc_d2_log, start_rendering)
 
                 rms_mc_psi_1.append(rms(mc_psi_1_log))
                 rms_mc_psi_2.append(rms(mc_psi_2_log))
@@ -198,7 +209,9 @@ if __name__ == '__main__':
                                       '# max_psi_1: {:.3f}\n'.format(max_mc_psi_1[demo]) +
                                       '# max_psi_2: {:.3f}\n'.format(max_mc_psi_2[demo]) +
                                       '# max_d2: {:.3f}\n'.format(max_mc_d2[demo]) +
-                                      '# reward: {:.3f}\n\n'.format(r))
+                                      '# reward: {:.3f}\n'.format(r) + 
+                                      '# q0: {}\n'.format(q0) + 
+                                      '# qg: {}\n\n'.format(qg))
                     
                     df.to_csv(mc_filename, sep='\t', index=False, mode='a')
 
@@ -208,7 +221,8 @@ if __name__ == '__main__':
                 rl_d2_log = []
                 rl_t_log = []
                 r, info = test_rl(env, learned_policy, state, train_phase, sess,
-                            rl_psi_1_log, rl_psi_2_log, rl_d2_log, rl_t_log)
+                            rl_psi_1_log, rl_psi_2_log, rl_d2_log, rl_t_log, q0, qg,
+                            start_rendering)
                 rms_rl_psi_1.append(rms(mc_psi_1_log))
                 rms_rl_psi_2.append(rms(mc_psi_2_log))
                 rms_rl_d2.append(rms(mc_d2_log))
@@ -243,7 +257,9 @@ if __name__ == '__main__':
                                       '# max_psi_1: {:.3f}\n'.format(max_rl_psi_1[demo]) +
                                       '# max_psi_2: {:.3f}\n'.format(max_rl_psi_2[demo]) +
                                       '# max_d2: {:.3f}\n'.format(max_rl_d2[demo]) +
-                                      '# reward: {:.3f}\n\n'.format(r))
+                                      '# reward: {:.3f}\n\n'.format(r) +
+                                      '# q0: {}\n'.format(q0) + 
+                                      '# qg: {}\n\n'.format(qg))
                     
                     df.to_csv(rl_filename, sep='\t', index=False, mode='a')
 
