@@ -115,7 +115,7 @@ def abs_max(x):
 
 if __name__ == '__main__':
     env = gym.make('TruckBackerUpper-v0').unwrapped
-    env.manual_velocity(-25.0)
+    #env.manual_velocity(-25.0)
     for seed_idx in range(len(SEEDS)):
         checkpoint_path = "./models/" + LABEL + "_seed_" + str(
                           SEEDS[seed_idx]) + "/my_ddpg.ckpt"
