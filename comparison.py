@@ -223,12 +223,12 @@ if __name__ == '__main__':
                 r, info = test_rl(env, learned_policy, state, train_phase, sess,
                             rl_psi_1_log, rl_psi_2_log, rl_d2_log, rl_t_log, q0, qg,
                             start_rendering)
-                rms_rl_psi_1.append(rms(mc_psi_1_log))
-                rms_rl_psi_2.append(rms(mc_psi_2_log))
-                rms_rl_d2.append(rms(mc_d2_log))
-                max_rl_psi_1.append(abs_max(mc_psi_1_log))
-                max_rl_psi_2.append(abs_max(mc_psi_2_log))
-                max_rl_d2.append(abs_max(mc_psi_2_log))
+                rms_rl_psi_1.append(rms(rl_psi_1_log))
+                rms_rl_psi_2.append(rms(rl_psi_2_log))
+                rms_rl_d2.append(rms(rl_d2_log))
+                max_rl_psi_1.append(abs_max(rl_psi_1_log))
+                max_rl_psi_2.append(abs_max(rl_psi_2_log))
+                max_rl_d2.append(abs_max(rl_psi_2_log))
                 rl_goal_flag.append(info['goal'])
                 rl_jackknife.append(info['jackknife'])
                 rl_out_of_bounds.append(info['out_of_bounds'])
