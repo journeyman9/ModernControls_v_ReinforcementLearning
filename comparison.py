@@ -13,11 +13,13 @@ import sys
 import pandas as pd
 import os
 import select
+import scipy.stats as stats
+import matplotlib.pyplot as plt
 
 SEEDS = [0]
 LABEL = 'trailer'
 K = np.array([-3.7896, 12.8011, -1.0])
-DEMONSTRATIONS = 2
+DEMONSTRATIONS = 25
 
 def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, start_rendering): 
     done = False
@@ -265,3 +267,34 @@ if __name__ == '__main__':
 
             env.close()
         tf.reset_default_graph()
+
+    ## Stats -- null hypothesis = equal means assuming equal variance
+    # if p-val is smaller than .05, reject null hypothesis
+
+    # rms_mc_psi_1, rms_mc_psi_2, rms_mc_d2
+    # rms_rl_psi_1, rms_rl_psi_2, rms_rl_d2
+
+    # max_mc_psi_1, max_mc_psi_2, max_mc_d2
+    # max_rl_psi_1, max_rl_psi_2, max_rl_d2
+
+    # mc_min_d, mc_min_psi
+    # rl_min_d, rl_min_psi
+
+    df = pd.DataFrame({'rms_mc_psi_1' : rms_mc_psi_1, 'rms_mc_psi_2' : rms_mc_psi_2, 
+                       'rms_mc_d2' : rms_mc_d2, 
+                       'rms_rl_psi_1' : rms_rl_psi_1, 'rms_rl_psi_2': rms_rl_psi_2,
+                       'rms_rl_d2' : rms_rl_d2,
+                       'max_mc_psi_1' : max_mc_psi_1, 'max_mc_psi_2' : max_mc_psi_2,
+                       'max_mc_d2' : max_mc_d2, 
+                       'max_rl_psi_1': max_rl_psi_1, 'max_rl_psi_2' : max_rl_psi_2,
+                       'max_rl_d2' : max_rl_d2,
+                       'mc_min_d': mc_min_d, 'mc_min_psi' : mc_min_psi,
+                       'rl_min_d': rl_min_d, 'rl_min_psi' : rl_min_psi,
+                       'mc_goal_flag' : mc_goal_flag, 'mc_jackknife' : mc_jackknife,
+                       'mc_out_of_bounds' : mc_out_of_bounds, 'mc_times_up' : mc_times_up,
+                       'mc_fin' : mc_fin, 'mc_t': mc_t, 
+                       'rl_goal_flag' : rl_goal_flag, 'rl_jackknife' : rl_jackknife,
+                       'rl_out_of_bounds' : rl_out_of_bounds, 'rl_times_up' : rl_times_up,
+                       'rl_fin' : rl_fin, 'rl_t' : rl_t})
+
+    df.to_csv('./data_to_stat.txt', sep='\t', index=False, mode='w')
