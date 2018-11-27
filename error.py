@@ -57,18 +57,8 @@ ax1.plot(range(t), 0*np.arange(t), 'r--')
 ax2.plot(range(t), 0*np.arange(t), 'r--')
 ax3.plot(range(t), 0*np.arange(t), 'r--')
 
-#h, l = ax1.get_legend_handles_labels()
-#axl.legend(h, l, borderaxespad=0)
-#axl.axis('off')
-
-'''
-lastSubplot = plt.subplot(4, 1, 4)
-lastSubplot.set_frame_on(False)
-lastSubplot.get_xaxis().set_visible(False)
-lastSubplot.get_yaxis().set_visible(False)
-plt.plot(0, 0, color='k', label='mc')
-plt.plot(0, 0, color='b', label='rl')
-lastSubplot.legend(loc = 'lower center')'''
+ax1.legend(loc='lower left', bbox_to_anchor=(0.0, 1.01), ncol=1, 
+           borderaxespad=0, frameon=False)
 
 ## Metrics
 # rms
