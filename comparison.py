@@ -18,10 +18,12 @@ import matplotlib.pyplot as plt
 
 SEEDS = [0]
 LABEL = 'trailer'
+RUN = []
 K = np.array([-3.7896, 12.8011, -1.0])
-DEMONSTRATIONS = 25
+DEMONSTRATIONS = 2
 
-def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, start_rendering): 
+def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
+            start_rendering): 
     done = False
     s = env.reset()
     q0 = env.q0
@@ -54,14 +56,16 @@ def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, start_rende
         mc_psi_1_log.append(s_[0])
         mc_psi_2_log.append(s_[1])
         mc_d2_log.append(s_[2])
+        mc_a_log.append(a)
 
         s = s_
         total_reward += r
         steps += 1
     return total_reward, info, q0, qg, start_rendering
 
-def test_rl(env, policy, state, train_phase, sess, 
-            rl_psi_1_log, rl_psi_2_log, rl_d2_log, rl_t_log, q0, qg, start_rendering):
+def test_rl(env, policy, q_value, state_a, state_c, action, train_phase, sess, 
+            rl_psi_1_log, rl_psi_2_log, rl_d2_log, rl_t_log, rl_a_log, rl_q_log, 
+            q0, qg, start_rendering):
     done = False
     q0_ = q0.copy()
     qg_ = qg.copy()
@@ -87,8 +91,8 @@ def test_rl(env, policy, state, train_phase, sess,
                 print('hide render...')
         if start_rendering:
             env.render()
-        a = sess.run(policy, feed_dict={state: s.reshape(1, s.shape[0]),
-                                        train_phase: False})
+        a = sess.run(policy, feed_dict={state_a: s.reshape(1, s.shape[0]),
+                                        train_phase: False})[0]
         s_, r, done, info = env.step(a)
         
         if done:
@@ -102,6 +106,9 @@ def test_rl(env, policy, state, train_phase, sess,
         rl_psi_1_log.append(s_[0])
         rl_psi_2_log.append(s_[1])
         rl_d2_log.append(s_[2])
+        rl_a_log.append(a[0])
+        rl_q_log.append(sess.run(q_value, feed_dict={state_c: s.reshape(1, s.shape[0]),
+                                                     action: a.reshape(1, a.shape[0])})[0, 0])
 
         s = s_
         total_reward += r
@@ -141,6 +148,7 @@ if __name__ == '__main__':
             mc_min_d = []
             mc_min_psi = []
             mc_t = []
+            mc_a = []
 
             ## Reinforcement Learning
             rms_rl_psi_1 = []
@@ -157,9 +165,15 @@ if __name__ == '__main__':
             rl_min_d = []
             rl_min_psi = []
             rl_t = []
+            rl_a = []
+            rl_q = []
+
             saved = tf.train.import_meta_graph(checkpoint_path + '.meta', clear_devices=True)
             saved.restore(sess, checkpoint_path)
-            state = sess.graph.get_tensor_by_name('Actor/s:0')
+            state_a = sess.graph.get_tensor_by_name('Actor/s:0')
+            state_c = sess.graph.get_tensor_by_name('Critic/s:0')
+            action = sess.graph.get_tensor_by_name('Critic/a:0')
+            q_value = sess.graph.get_tensor_by_name('Critic/Q_online_network/Q_hat/add:0')
             train_phase = sess.graph.get_tensor_by_name('Actor/train_phase_actor:0')
             learned_policy = sess.graph.get_tensor_by_name(
                                     'Actor/pi_online_network/pi_hat/Mul_4:0')
@@ -171,9 +185,10 @@ if __name__ == '__main__':
                 mc_psi_2_log = []
                 mc_d2_log = []
                 mc_t_log = []
+                mc_a_log = []
                 r, info, q0, qg, start_rendering = test_mc(
                                 env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, 
-                                mc_d2_log, start_rendering)
+                                mc_d2_log, mc_a_log, start_rendering)
 
                 rms_mc_psi_1.append(rms(mc_psi_1_log))
                 rms_mc_psi_2.append(rms(mc_psi_2_log))
@@ -192,7 +207,8 @@ if __name__ == '__main__':
                 df = pd.DataFrame({'time' : mc_t_log,
                                    'mc_psi_1' : mc_psi_1_log, 
                                    'mc_psi_2' : mc_psi_2_log, 
-                                   'mc_d2' : mc_d2_log})
+                                   'mc_d2' : mc_d2_log,
+                                   'mc_a' : mc_a_log})
                 if not os.path.exists('./run' + str(demo)):
                     os.mkdir('./run' + str(demo))
                 with open('./run' + str(demo) + '/' + 'mc' + 
@@ -222,9 +238,12 @@ if __name__ == '__main__':
                 rl_psi_2_log = []
                 rl_d2_log = []
                 rl_t_log = []
-                r, info = test_rl(env, learned_policy, state, train_phase, sess,
-                            rl_psi_1_log, rl_psi_2_log, rl_d2_log, rl_t_log, q0, qg,
-                            start_rendering)
+                rl_a_log = []
+                rl_q_log = []
+                r, info = test_rl(env, learned_policy, q_value, state_a, state_c, action, 
+                                  train_phase, sess, rl_psi_1_log, rl_psi_2_log,
+                                  rl_d2_log, rl_t_log, rl_a_log, rl_q_log, 
+                                  q0, qg, start_rendering)
                 rms_rl_psi_1.append(rms(rl_psi_1_log))
                 rms_rl_psi_2.append(rms(rl_psi_2_log))
                 rms_rl_d2.append(rms(rl_d2_log))
@@ -242,7 +261,9 @@ if __name__ == '__main__':
                 df = pd.DataFrame({'time' : rl_t_log,
                                    'rl_psi_1' : rl_psi_1_log, 
                                    'rl_psi_2' : rl_psi_2_log, 
-                                   'rl_d2' : rl_d2_log})
+                                   'rl_d2' : rl_d2_log, 
+                                   'rl_a' : rl_a_log,
+                                   'rl_q' : rl_q_log})
                 with open('./run' + str(demo) + '/' + 'rl' + 
                           str(rl_goal_flag[demo]) + '.txt', 'w') as rl_filename:
                     rl_filename.write('# goal: {}\n'.format(rl_goal_flag[demo]) +
