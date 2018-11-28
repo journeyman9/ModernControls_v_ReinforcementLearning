@@ -68,11 +68,70 @@ def welch_test(data1, data2, alpha=0.05, tail=2, name1='mu_1', name2='mu_2'):
     return MU_1, SIGMA_1, MU_2, SIGMA_2
 
 # RMS
+fig1, ax1 = plt.subplots(1, 3, figsize=(20, 10), sharex=True)
+index = np.arange(5)
+bar_width = 0.35 / 2
+opacity = 0.8
+
+ax1[0].set_ylabel(r'rms $\psi_{1} [rad]$')
+ax1[0].set_xlabel(foldername.strip('/') + '[m]')
+ax1[0].set_xticks(index+bar_width/2)
+ax1[0].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
+
+ax1[1].set_ylabel(r'rms $\psi_{2} [rad]$')
+ax1[1].set_xlabel(foldername.strip('/') + '[m]')
+ax1[1].set_xticks(index+bar_width/2)
+ax1[1].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
+
+ax1[2].set_ylabel(r'rms $d_{2} [m]$')
+ax1[2].set_xlabel(foldername.strip('/') + '[m]')
+ax1[2].set_xticks(index+bar_width/2)
+ax1[2].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
+
 print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
-rms_mc_psi_1 = metrics1['rms_mc_psi_1'].values
-rms_rl_psi_1 = metrics1['rms_rl_psi_1'].values
-MU_rms_mc_psi_1, SIGMA_rms_mc_psi_1, MU_rms_rl_psi_1, SIGMA_rms_rl_psi_1 = \
-    welch_test(rms_mc_psi_1, rms_rl_psi_1, name1='rms_mc_psi_1', name2='rms_rl_psi_1')
+rms_mc1_psi_1 = metrics1['rms_mc_psi_1'].values
+rms_rl1_psi_1 = metrics1['rms_rl_psi_1'].values
+MU_rms_mc1_psi_1, SIGMA_rms_mc1_psi_1, MU_rms_rl1_psi_1, SIGMA_rms_rl1_psi_1 = \
+    welch_test(rms_mc1_psi_1, rms_rl1_psi_1, name1='rms_mc1_psi_1', name2='rms_rl1_psi_1')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_2 ~~~~~~~~~~~~~~~')
+rms_mc2_psi_1 = metrics2['rms_mc_psi_1'].values
+rms_rl2_psi_1 = metrics2['rms_rl_psi_1'].values
+MU_rms_mc2_psi_1, SIGMA_rms_mc2_psi_1, MU_rms_rl2_psi_1, SIGMA_rms_rl2_psi_1 = \
+    welch_test(rms_mc2_psi_1, rms_rl2_psi_1, name1='rms_mc2_psi_1', name2='rms_rl2_psi_1')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_3 ~~~~~~~~~~~~~~~')
+rms_mc3_psi_1 = metrics3['rms_mc_psi_1'].values
+rms_rl3_psi_1 = metrics3['rms_rl_psi_1'].values
+MU_rms_mc3_psi_1, SIGMA_rms_mc3_psi_1, MU_rms_rl3_psi_1, SIGMA_rms_rl3_psi_1 = \
+    welch_test(rms_mc3_psi_1, rms_rl3_psi_1, name1='rms_mc3_psi_1', name2='rms_rl3_psi_1')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_4 ~~~~~~~~~~~~~~~')
+rms_mc4_psi_1 = metrics4['rms_mc_psi_1'].values
+rms_rl4_psi_1 = metrics4['rms_rl_psi_1'].values
+MU_rms_mc4_psi_1, SIGMA_rms_mc4_psi_1, MU_rms_rl4_psi_1, SIGMA_rms_rl4_psi_1 = \
+    welch_test(rms_mc4_psi_1, rms_rl4_psi_1, name1='rms_mc4_psi_1', name2='rms_rl4_psi_1')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_5 ~~~~~~~~~~~~~~~')
+rms_mc5_psi_1 = metrics5['rms_mc_psi_1'].values
+rms_rl5_psi_1 = metrics5['rms_rl_psi_1'].values
+MU_rms_mc5_psi_1, SIGMA_rms_mc5_psi_1, MU_rms_rl5_psi_1, SIGMA_rms_rl5_psi_1 = \
+    welch_test(rms_mc5_psi_1, rms_rl5_psi_1, name1='rms_mc5_psi_1', name2='rms_rl5_psi_1')
+
+mc_rms_psi_1 = [MU_rms_mc1_psi_1, MU_rms_mc2_psi_1, MU_rms_mc3_psi_1, MU_rms_mc4_psi_1, MU_rms_mc5_psi_1]
+mc_rms_psi_1_std = [SIGMA_rms_mc1_psi_1, SIGMA_rms_mc2_psi_1, SIGMA_rms_mc3_psi_1, 
+                    SIGMA_rms_mc4_psi_1, SIGMA_rms_mc5_psi_1]
+rects1 = ax1[0].bar(index, mc_rms_psi_1, bar_width, yerr=mc_rms_psi_1_std, alpha=opacity, 
+                    color='k', capsize=10, label='modern controls')
+
+rl_rms_psi_1 = [MU_rms_rl1_psi_1, MU_rms_rl2_psi_1, MU_rms_rl3_psi_1, MU_rms_rl4_psi_1, MU_rms_rl5_psi_1]
+rl_rms_psi_1_std = [SIGMA_rms_rl1_psi_1, SIGMA_rms_rl2_psi_1, SIGMA_rms_rl3_psi_1, 
+                    SIGMA_rms_rl4_psi_1, SIGMA_rms_rl5_psi_1]
+
+rects2 = ax1[0].bar(index+bar_width, rl_rms_psi_1, bar_width, yerr=rl_rms_psi_1_std, 
+                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+ax1[0].legend()
+
 
 rms_mc_psi_2 = metrics1['rms_mc_psi_2'].values
 rms_rl_psi_2 = metrics1['rms_rl_psi_2'].values
@@ -83,38 +142,10 @@ rms_mc_d2 = metrics1['rms_mc_d2'].values
 rms_rl_d2 = metrics1['rms_rl_d2'].values
 MU_rms_mc_d2, SIGMA_rms_mc_d2, MU_rms_rl_d2, SIGMA_rms_rl_d2 = \
     welch_test(rms_mc_d2, rms_rl_d2, name1='rms_mc_d2', name2='rms_rl_d2')
-
-fig1, ax1 = plt.subplots()
-index = np.arange(3)
-bar_width = 0.35 / 2
-opacity = 0.8
-
-mc_rms = [MU_rms_mc_psi_1, MU_rms_mc_psi_2, MU_rms_mc_d2]
-mc_rms_std = [SIGMA_rms_mc_psi_1, SIGMA_rms_mc_psi_2, SIGMA_rms_mc_d2]
-rects1 = plt.bar(index, mc_rms, bar_width, yerr=mc_rms_std, alpha=opacity, 
-                 color='k', capsize=10, label='modern controls')
-
-rl_rms = [MU_rms_rl_psi_1, MU_rms_rl_psi_2, MU_rms_rl_d2]
-rl_rms_std = [SIGMA_rms_rl_psi_1, SIGMA_rms_rl_psi_2, SIGMA_rms_rl_d2]
-
-rects2 = plt.bar(index+bar_width, rl_rms, bar_width, yerr=rl_rms_std, 
-                 alpha=opacity, color='b', capsize=10, label='reinforcement learning')
-
-print('~~~~~~~~~~~~~' + foldername.strip('/') + '_2 ~~~~~~~~~~~~~~~')
-
-
-print('~~~~~~~~~~~~~' + foldername.strip('/') + '_3 ~~~~~~~~~~~~~~~')
-
-print('~~~~~~~~~~~~~' + foldername.strip('/') + '_4 ~~~~~~~~~~~~~~~')
-
-print('~~~~~~~~~~~~~' + foldername.strip('/') + '_5 ~~~~~~~~~~~~~~~')
-
-plt.xlabel(foldername.strip('/'))
-plt.ylabel('rms value')
-plt.xticks(index+bar_width/2, (r'$\psi_{1} [rad]$', r'$\psi_{2} [rad]$', r'$d_{2} [m]$'))
-plt.legend()
 plt.tight_layout()
 plt.show()
+
+exit()
 
 # Max
 max_mc_psi_1 = abs(metrics1['max_mc_psi_1'].values)
