@@ -19,10 +19,14 @@ import matplotlib.pyplot as plt
 SEED = 0
 SEED_ID = [0, 1]
 LABEL = 'trailer'
+
 PARAM_LABEL = 'wheelbase'
-PARAMS = [12.192, 11.192]
-#PARAMS = [12.192, 11.192, 10.192, 9.192, 8.192]
+PARAMS = [12.192, 11.192, 10.192, 9.192, 8.192]
+
+#PARAM_LABEL = 'hitch'
 #PARAMS = [-0.23, -0.26, -0.29, 0.00, 0.29]
+
+#PARAM_LABEL = 'velocity'
 #PARAMS = [-1.118, -1.564, -2.012, -2.459, -2.906]
 
 K = np.array([-3.7896, 12.8011, -1.0])
@@ -213,10 +217,16 @@ if __name__ == '__main__':
                                'mc_psi_2' : mc_psi_2_log, 
                                'mc_d2' : mc_d2_log,
                                'mc_a' : mc_a_log})
-            if not os.path.exists('./run' + str(demo)):
-                os.mkdir('./run' + str(demo))
-            with open('./run' + str(demo) + '/' + 'mc' + 
-                      str(mc_goal_flag[demo]) + '.txt', 'w') as mc_filename:
+            parent = './' + str(PARAM_LABEL)
+            child1 =  './' + str(PARAM_LABEL) + '/' + str(PARAMS[param_idx]).replace(".", "_")
+            child2 = './' + str(PARAM_LABEL) + '/' + str(PARAMS[param_idx]).replace(".", "_") + '/run' + str(demo)
+            if not os.path.exists(parent):
+                os.mkdir(parent)
+            if not os.path.exists(child1):
+                os.mkdir(child1)
+            if not os.path.exists(child2):
+                os.mkdir(child2)
+            with open(child2 + '/' + 'mc' + str(mc_goal_flag[demo]) + '.txt', 'w') as mc_filename:
                 mc_filename.write('# goal: {}\n'.format(mc_goal_flag[demo]) +
                                   '# jackknife: {}\n'.format(mc_jackknife[demo]) + 
                                   '# out_of_bounds: {}\n'.format(mc_out_of_bounds[demo]) +
@@ -285,8 +295,8 @@ if __name__ == '__main__':
                                        'rl_a' : rl_a_log,
                                        'rl_q' : rl_q_log})
                     if seed_idx < 1:
-                        with open('./run' + str(demo) + '/' + 'rl' + 
-                                  str(rl_goal_flag[demo]) + '.txt', 'w') as rl_filename:
+                        with open(child2 + '/' + 'rl' + str(rl_goal_flag[demo]) + 
+                                  '.txt', 'w') as rl_filename:
                             rl_filename.write('# goal: {}\n'.format(rl_goal_flag[demo]) +
                                               '# jackknife: {}\n'.format(rl_jackknife[demo]) + 
                                               '# out_of_bounds: {}\n'.format(
@@ -308,8 +318,8 @@ if __name__ == '__main__':
                             
                             df.to_csv(rl_filename, sep='\t', index=False, mode='a')
                     else:
-                        with open('./run' + str(demo) + '/' + 'rl' + 
-                                  str(info['goal']) + '_' + str(SEED_ID[seed_idx]) +'.txt', 
+                        with open(child2 + '/' + 'rl' + str(info['goal']) + '_' + 
+                                  str(SEED_ID[seed_idx]) +'.txt', 
                                                                 'w') as rl_filename:
                             rl_filename.write('# goal: {}\n'.format(info['goal']) +
                                               '# jackknife: {}\n'.format(info['jackknife']) + 
@@ -367,7 +377,7 @@ if __name__ == '__main__':
                            'rl_out_of_bounds' : rl_out_of_bounds, 'rl_times_up' : rl_times_up,
                            'rl_fin' : rl_fin, 'rl_t' : rl_t})
         
-        with open('./stat_me_' + PARAM_LABEL + '_' + 
+        with open('./' + str(PARAM_LABEL) + '/' + 'stat_me_' + PARAM_LABEL + '_' + 
                   str(PARAMS[param_idx]).replace(".", "_") + '.txt', 'w') as filename:
             filename.write('# mc_goal: {}\n'.format(sum(mc_goal_flag)) +
                               '# mc_jackknife: {}\n'.format(sum(mc_jackknife)) + 
