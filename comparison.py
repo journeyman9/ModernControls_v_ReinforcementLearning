@@ -20,13 +20,13 @@ SEED = 0
 SEED_ID = [0, 1]
 LABEL = 'trailer'
 PARAM_LABEL = 'wheelbase'
-PARAMS = [12.192]
+PARAMS = [12.192, 11.192]
 #PARAMS = [12.192, 11.192, 10.192, 9.192, 8.192]
 #PARAMS = [-0.23, -0.26, -0.29, 0.00, 0.29]
 #PARAMS = [-1.118, -1.564, -2.012, -2.459, -2.906]
 
 K = np.array([-3.7896, 12.8011, -1.0])
-DEMONSTRATIONS = 1
+DEMONSTRATIONS = 2
 
 def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
             start_rendering): 
@@ -135,9 +135,19 @@ if __name__ == '__main__':
     np.random.seed(SEED)
     tf.set_random_seed(SEED)
     env.seed(SEED)
+    
+    start_rendering = False
          
     for param_idx in range(len(PARAMS)):
         ''' ''' 
+        if PARAM_LABEL == 'wheelbase':
+            env.manual_params(L2=PARAMS[param_idx], h=-0.29)
+        elif PARAM_LABEL == 'hitch':
+            env.manual_params(L2=10.192, h=PARAMS[param_idx])
+        elif PARAM_LABEL == 'velocity':
+            env.manual_velocity(v=PARAMS[param_idx])
+        else:
+            pass
         ## Modern Controls
         rms_mc_psi_1 = []
         rms_mc_psi_2 = []
@@ -173,8 +183,6 @@ if __name__ == '__main__':
         rl_a = []
         rl_q = []
     
-        start_rendering = False
-
         for demo in range(DEMONSTRATIONS):
             ## Modern Controls
             mc_psi_1_log = []
@@ -358,6 +366,18 @@ if __name__ == '__main__':
                            'rl_goal_flag' : rl_goal_flag, 'rl_jackknife' : rl_jackknife,
                            'rl_out_of_bounds' : rl_out_of_bounds, 'rl_times_up' : rl_times_up,
                            'rl_fin' : rl_fin, 'rl_t' : rl_t})
+        
+        with open('./stat_me_' + PARAM_LABEL + '_' + 
+                  str(PARAMS[param_idx]).replace(".", "_") + '.txt', 'w') as filename:
+            filename.write('# mc_goal: {}\n'.format(sum(mc_goal_flag)) +
+                              '# mc_jackknife: {}\n'.format(sum(mc_jackknife)) + 
+                              '# mc_out_of_bounds: {}\n'.format(sum(mc_out_of_bounds)) +
+                              '# mc_times_up: {}\n'.format(sum(mc_times_up)) +
+                              '# mc_fin: {}\n\n'.format(sum(mc_fin)) + 
+                              '# rl_goal: {}\n'.format(sum(rl_goal_flag)) +
+                              '# rl_jackknife: {}\n'.format(sum(rl_jackknife)) + 
+                              '# rl_out_of_bounds: {}\n'.format(sum(rl_out_of_bounds)) +
+                              '# rl_times_up: {}\n'.format(sum(rl_times_up)) +
+                              '# rl_fin: {}\n\n'.format(sum(rl_fin)) )
 
-        df.to_csv('./stat_me_' + PARAM_LABEL + '_' + str(PARAMS[param_idx]) + 
-                  '.txt', sep='\t', index=False, mode='w')
+            df.to_csv(filename, sep='\t', index=False, mode='a')
