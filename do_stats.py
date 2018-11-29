@@ -132,16 +132,95 @@ rects2 = ax1[0].bar(index+bar_width, rl_rms_psi_1, bar_width, yerr=rl_rms_psi_1_
                     alpha=opacity, color='b', capsize=10, label='reinforcement learning')
 ax1[0].legend()
 
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
+rms_mc1_psi_2 = metrics1['rms_mc_psi_2'].values
+rms_rl1_psi_2 = metrics1['rms_rl_psi_2'].values
+MU_rms_mc1_psi_2, SIGMA_rms_mc1_psi_2, MU_rms_rl1_psi_2, SIGMA_rms_rl1_psi_2 = \
+    welch_test(rms_mc1_psi_2, rms_rl1_psi_2, name1='rms_mc1_psi_2', name2='rms_rl1_psi_2')
 
-rms_mc_psi_2 = metrics1['rms_mc_psi_2'].values
-rms_rl_psi_2 = metrics1['rms_rl_psi_2'].values
-MU_rms_mc_psi_2, SIGMA_rms_mc_psi_2, MU_rms_rl_psi_2, SIGMA_rms_rl_psi_2 = \
-    welch_test(rms_mc_psi_2, rms_rl_psi_2, name1='rms_mc_psi_2', name2='rms_rl_psi_2')
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_2 ~~~~~~~~~~~~~~~')
+rms_mc2_psi_2 = metrics2['rms_mc_psi_2'].values
+rms_rl2_psi_2 = metrics2['rms_rl_psi_2'].values
+MU_rms_mc2_psi_2, SIGMA_rms_mc2_psi_2, MU_rms_rl2_psi_2, SIGMA_rms_rl2_psi_2 = \
+    welch_test(rms_mc2_psi_2, rms_rl2_psi_2, name1='rms_mc2_psi_2', name2='rms_rl2_psi_2')
 
-rms_mc_d2 = metrics1['rms_mc_d2'].values
-rms_rl_d2 = metrics1['rms_rl_d2'].values
-MU_rms_mc_d2, SIGMA_rms_mc_d2, MU_rms_rl_d2, SIGMA_rms_rl_d2 = \
-    welch_test(rms_mc_d2, rms_rl_d2, name1='rms_mc_d2', name2='rms_rl_d2')
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_3 ~~~~~~~~~~~~~~~')
+rms_mc3_psi_2 = metrics3['rms_mc_psi_2'].values
+rms_rl3_psi_2 = metrics3['rms_rl_psi_2'].values
+MU_rms_mc3_psi_2, SIGMA_rms_mc3_psi_2, MU_rms_rl3_psi_2, SIGMA_rms_rl3_psi_2 = \
+    welch_test(rms_mc3_psi_2, rms_rl3_psi_2, name1='rms_mc3_psi_2', name2='rms_rl3_psi_2')
+
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_4 ~~~~~~~~~~~~~~~')
+rms_mc4_psi_2 = metrics4['rms_mc_psi_2'].values
+rms_rl4_psi_2 = metrics4['rms_rl_psi_2'].values
+MU_rms_mc4_psi_2, SIGMA_rms_mc4_psi_2, MU_rms_rl4_psi_2, SIGMA_rms_rl4_psi_2 = \
+    welch_test(rms_mc4_psi_2, rms_rl4_psi_2, name1='rms_mc4_psi_2', name2='rms_rl4_psi_2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_5 ~~~~~~~~~~~~~~~')
+rms_mc5_psi_2 = metrics5['rms_mc_psi_2'].values
+rms_rl5_psi_2 = metrics5['rms_rl_psi_2'].values
+MU_rms_mc5_psi_2, SIGMA_rms_mc5_psi_2, MU_rms_rl5_psi_2, SIGMA_rms_rl5_psi_2 = \
+    welch_test(rms_mc5_psi_2, rms_rl5_psi_2, name1='rms_mc5_psi_2', name2='rms_rl5_psi_2')
+
+mc_rms_psi_2 = [MU_rms_mc1_psi_2, MU_rms_mc2_psi_2, MU_rms_mc3_psi_2, MU_rms_mc4_psi_2, MU_rms_mc5_psi_2]
+mc_rms_psi_2_std = [SIGMA_rms_mc1_psi_2, SIGMA_rms_mc2_psi_2, SIGMA_rms_mc3_psi_2, 
+                    SIGMA_rms_mc4_psi_2, SIGMA_rms_mc5_psi_2]
+rects3 = ax1[1].bar(index, mc_rms_psi_2, bar_width, yerr=mc_rms_psi_2_std, alpha=opacity, 
+                    color='k', capsize=10, label='modern controls')
+
+rl_rms_psi_2 = [MU_rms_rl1_psi_2, MU_rms_rl2_psi_2, MU_rms_rl3_psi_2, MU_rms_rl4_psi_2, MU_rms_rl5_psi_2]
+rl_rms_psi_2_std = [SIGMA_rms_rl1_psi_2, SIGMA_rms_rl2_psi_2, SIGMA_rms_rl3_psi_2, 
+                    SIGMA_rms_rl4_psi_2, SIGMA_rms_rl5_psi_2]
+
+rects4 = ax1[1].bar(index+bar_width, rl_rms_psi_2, bar_width, yerr=rl_rms_psi_2_std, 
+                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
+rms_mc1_d2 = metrics1['rms_mc_d2'].values
+rms_rl1_d2 = metrics1['rms_rl_d2'].values
+MU_rms_mc1_d2, SIGMA_rms_mc1_d2, MU_rms_rl1_d2, SIGMA_rms_rl1_d2 = \
+    welch_test(rms_mc1_d2, rms_rl1_d2, name1='rms_mc1_d2', name2='rms_rl1_d2')
+
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_2 ~~~~~~~~~~~~~~~')
+rms_mc2_d2 = metrics2['rms_mc_d2'].values
+rms_rl2_d2 = metrics2['rms_rl_d2'].values
+MU_rms_mc2_d2, SIGMA_rms_mc2_d2, MU_rms_rl2_d2, SIGMA_rms_rl2_d2 = \
+    welch_test(rms_mc2_d2, rms_rl2_d2, name1='rms_mc2_d2', name2='rms_rl2_d2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_3 ~~~~~~~~~~~~~~~')
+rms_mc3_d2 = metrics3['rms_mc_d2'].values
+rms_rl3_d2 = metrics3['rms_rl_d2'].values
+MU_rms_mc3_d2, SIGMA_rms_mc3_d2, MU_rms_rl3_d2, SIGMA_rms_rl3_d2 = \
+    welch_test(rms_mc3_d2, rms_rl3_d2, name1='rms_mc3_d2', name2='rms_rl3_d2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_4 ~~~~~~~~~~~~~~~')
+rms_mc4_d2 = metrics4['rms_mc_d2'].values
+rms_rl4_d2 = metrics4['rms_rl_d2'].values
+MU_rms_mc4_d2, SIGMA_rms_mc4_d2, MU_rms_rl4_d2, SIGMA_rms_rl4_d2 = \
+    welch_test(rms_mc4_d2, rms_rl4_d2, name1='rms_mc4_d2', name2='rms_rl4_d2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_5 ~~~~~~~~~~~~~~~')
+rms_mc5_d2 = metrics5['rms_mc_d2'].values
+rms_rl5_d2 = metrics5['rms_rl_d2'].values
+MU_rms_mc5_d2, SIGMA_rms_mc5_d2, MU_rms_rl5_d2, SIGMA_rms_rl5_d2 = \
+    welch_test(rms_mc5_d2, rms_rl5_d2, name1='rms_mc5_d2', name2='rms_rl5_d2')
+
+mc_rms_d2 = [MU_rms_mc1_d2, MU_rms_mc2_d2, MU_rms_mc3_d2, MU_rms_mc4_d2, MU_rms_mc5_d2]
+mc_rms_d2_std = [SIGMA_rms_mc1_d2, SIGMA_rms_mc2_d2, SIGMA_rms_mc3_d2, 
+                    SIGMA_rms_mc4_d2, SIGMA_rms_mc5_d2]
+rects5 = ax1[2].bar(index, mc_rms_d2, bar_width, yerr=mc_rms_d2_std, alpha=opacity, 
+                    color='k', capsize=10, label='modern controls')
+
+rl_rms_d2 = [MU_rms_rl1_d2, MU_rms_rl2_d2, MU_rms_rl3_d2, MU_rms_rl4_d2, MU_rms_rl5_d2]
+rl_rms_d2_std = [SIGMA_rms_rl1_d2, SIGMA_rms_rl2_d2, SIGMA_rms_rl3_d2, 
+                    SIGMA_rms_rl4_d2, SIGMA_rms_rl5_d2]
+
+rects6 = ax1[2].bar(index+bar_width, rl_rms_d2, bar_width, yerr=rl_rms_d2_std, 
+                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+
 plt.tight_layout()
 plt.show()
 
