@@ -222,57 +222,278 @@ rects6 = ax1[2].bar(index+bar_width, rl_rms_d2, bar_width, yerr=rl_rms_d2_std,
                     alpha=opacity, color='b', capsize=10, label='reinforcement learning')
 
 plt.tight_layout()
-plt.show()
-
-exit()
 
 # Max
-max_mc_psi_1 = abs(metrics1['max_mc_psi_1'].values)
-max_rl_psi_1 = abs(metrics1['max_rl_psi_1'].values)
-MU_max_mc_psi_1, SIGMA_max_mc_psi_1, MU_max_rl_psi_1, SIGMA_max_rl_psi_1 = \
-    welch_test(max_mc_psi_1, max_rl_psi_1, name1='max_mc_psi_1', name2='max_rl_psi_1')
-
-max_mc_psi_2 = abs(metrics1['max_mc_psi_2'].values)
-max_rl_psi_2 = abs(metrics1['max_rl_psi_2'].values)
-MU_max_mc_psi_2, SIGMA_max_mc_psi_2, MU_max_rl_psi_2, SIGMA_max_rl_psi_2 = \
-    welch_test(max_mc_psi_2, max_rl_psi_2, name1='max_mc_psi_2', name2='max_rl_psi_2')
-
-max_mc_d2 = abs(metrics1['max_mc_d2'].values)
-max_rl_d2 = abs(metrics1['max_rl_d2'].values)
-MU_max_mc_d2, SIGMA_max_mc_d2, MU_max_rl_d2, SIGMA_max_rl_d2 = \
-    welch_test(max_mc_d2, max_rl_d2, name1='max_mc_d2', name2='max_rl_d2')
-
-fig2, ax2 = plt.subplots()
-index = np.arange(3)
+fig2, ax2 = plt.subplots(1, 3, figsize=(20, 10), sharex=True)
+index = np.arange(5)
 bar_width = 0.35 / 2
 opacity = 0.8
 
-mc_max = [MU_max_mc_psi_1, MU_max_mc_psi_2, MU_max_mc_d2]
-mc_max_std = [SIGMA_max_mc_psi_1, SIGMA_max_mc_psi_2, SIGMA_max_mc_d2]
-rects1 = plt.bar(index, mc_max, bar_width, yerr=mc_max_std, alpha=opacity, 
-		 color='k', capsize=10, label='Modern Controls')
+ax2[0].set_ylabel(r'rms $\psi_{2} [rad]$')
+ax2[0].set_xlabel(foldername.strip('/') + '[m]')
+ax2[0].set_xticks(index+bar_width/2)
+ax2[0].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
 
-rl_max = [MU_max_rl_psi_1, MU_max_rl_psi_2, MU_max_rl_d2]
-rl_max_std = [SIGMA_max_rl_psi_1, SIGMA_max_rl_psi_2, SIGMA_max_rl_d2]
-rects2 = plt.bar(index+bar_width, rl_max, bar_width, yerr=rl_max_std, 
-		 alpha=opacity, color='b', capsize=10, label='Reinforcement Learning')
-plt.xlabel('Error Terms')
-plt.ylabel('max value')
-plt.xticks(index+bar_width/2, (r'$\psi_{1} [rad]$', r'$\psi_{2} [rad]$', r'$d_{2} [m]$'))
-plt.legend()
+ax2[1].set_ylabel(r'rms $\psi_{2} [rad]$')
+ax2[1].set_xlabel(foldername.strip('/') + '[m]')
+ax2[1].set_xticks(index+bar_width/2)
+ax2[1].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
+
+ax2[2].set_ylabel(r'rms $d_{2} [m]$')
+ax2[2].set_xlabel(foldername.strip('/') + '[m]')
+ax2[2].set_xticks(index+bar_width/2)
+ax2[2].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
+max_mc1_psi_1 = abs(metrics1['max_mc_psi_1'].values)
+max_rl1_psi_1 = abs(metrics1['max_rl_psi_1'].values)
+MU_max_mc1_psi_1, SIGMA_max_mc1_psi_1, MU_max_rl1_psi_1, SIGMA_max_rl1_psi_1 = \
+    welch_test(max_mc1_psi_1, max_rl1_psi_1, name1='max_mc1_psi_1', name2='max_rl1_psi_1')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_2 ~~~~~~~~~~~~~~~')
+max_mc2_psi_1 = abs(metrics2['max_mc_psi_1'].values)
+max_rl2_psi_1 = abs(metrics2['max_rl_psi_1'].values)
+MU_max_mc2_psi_1, SIGMA_max_mc2_psi_1, MU_max_rl2_psi_1, SIGMA_max_rl2_psi_1 = \
+    welch_test(max_mc2_psi_1, max_rl2_psi_1, name1='max_mc2_psi_1', name2='max_rl2_psi_1')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_3 ~~~~~~~~~~~~~~~')
+max_mc3_psi_1 = abs(metrics3['max_mc_psi_1'].values)
+max_rl3_psi_1 = abs(metrics3['max_rl_psi_1'].values)
+MU_max_mc3_psi_1, SIGMA_max_mc3_psi_1, MU_max_rl3_psi_1, SIGMA_max_rl3_psi_1 = \
+    welch_test(max_mc3_psi_1, max_rl3_psi_1, name1='max_mc3_psi_1', name2='max_rl3_psi_1')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_4 ~~~~~~~~~~~~~~~')
+max_mc4_psi_1 = abs(metrics4['max_mc_psi_1'].values)
+max_rl4_psi_1 = abs(metrics4['max_rl_psi_1'].values)
+MU_max_mc4_psi_1, SIGMA_max_mc4_psi_1, MU_max_rl4_psi_1, SIGMA_max_rl4_psi_1 = \
+    welch_test(max_mc4_psi_1, max_rl4_psi_1, name1='max_mc4_psi_1', name2='max_rl4_psi_1')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_5 ~~~~~~~~~~~~~~~')
+max_mc5_psi_1 = abs(metrics5['max_mc_psi_1'].values)
+max_rl5_psi_1 = abs(metrics5['max_rl_psi_1'].values)
+MU_max_mc5_psi_1, SIGMA_max_mc5_psi_1, MU_max_rl5_psi_1, SIGMA_max_rl5_psi_1 = \
+    welch_test(max_mc5_psi_1, max_rl5_psi_1, name1='max_mc5_psi_1', name2='max_rl5_psi_1')
+
+mc_max_psi_1 = [MU_max_mc1_psi_1, MU_max_mc2_psi_1, MU_max_mc3_psi_1, MU_max_mc4_psi_1, MU_max_mc5_psi_1]
+mc_max_psi_1_std = [SIGMA_max_mc1_psi_1, SIGMA_max_mc2_psi_1, SIGMA_max_mc3_psi_1, 
+                    SIGMA_max_mc4_psi_1, SIGMA_max_mc5_psi_1]
+rects7 = ax2[0].bar(index, mc_max_psi_1, bar_width, yerr=mc_max_psi_1_std, alpha=opacity, 
+                    color='k', capsize=10, label='modern controls')
+
+rl_max_psi_1 = [MU_max_rl1_psi_1, MU_max_rl2_psi_1, MU_max_rl3_psi_1, MU_max_rl4_psi_1, MU_max_rl5_psi_1]
+rl_max_psi_1_std = [SIGMA_max_rl1_psi_1, SIGMA_max_rl2_psi_1, SIGMA_max_rl3_psi_1, 
+                    SIGMA_max_rl4_psi_1, SIGMA_max_rl5_psi_1]
+
+rects8 = ax2[0].bar(index+bar_width, rl_max_psi_1, bar_width, yerr=rl_max_psi_1_std, 
+                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
+max_mc1_psi_2 = abs(metrics1['max_mc_psi_2'].values)
+max_rl1_psi_2 = abs(metrics1['max_rl_psi_2'].values)
+MU_max_mc1_psi_2, SIGMA_max_mc1_psi_2, MU_max_rl1_psi_2, SIGMA_max_rl1_psi_2 = \
+    welch_test(max_mc1_psi_2, max_rl1_psi_2, name1='max_mc1_psi_2', name2='max_rl1_psi_2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_3 ~~~~~~~~~~~~~~~')
+max_mc2_psi_2 = abs(metrics2['max_mc_psi_2'].values)
+max_rl2_psi_2 = abs(metrics2['max_rl_psi_2'].values)
+MU_max_mc2_psi_2, SIGMA_max_mc2_psi_2, MU_max_rl2_psi_2, SIGMA_max_rl2_psi_2 = \
+    welch_test(max_mc2_psi_2, max_rl2_psi_2, name1='max_mc2_psi_2', name2='max_rl2_psi_2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_3 ~~~~~~~~~~~~~~~')
+max_mc3_psi_2 = abs(metrics3['max_mc_psi_2'].values)
+max_rl3_psi_2 = abs(metrics3['max_rl_psi_2'].values)
+MU_max_mc3_psi_2, SIGMA_max_mc3_psi_2, MU_max_rl3_psi_2, SIGMA_max_rl3_psi_2 = \
+    welch_test(max_mc3_psi_2, max_rl3_psi_2, name1='max_mc3_psi_2', name2='max_rl3_psi_2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_4 ~~~~~~~~~~~~~~~')
+max_mc4_psi_2 = abs(metrics4['max_mc_psi_2'].values)
+max_rl4_psi_2 = abs(metrics4['max_rl_psi_2'].values)
+MU_max_mc4_psi_2, SIGMA_max_mc4_psi_2, MU_max_rl4_psi_2, SIGMA_max_rl4_psi_2 = \
+    welch_test(max_mc4_psi_2, max_rl4_psi_2, name1='max_mc4_psi_2', name2='max_rl4_psi_2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_5 ~~~~~~~~~~~~~~~')
+max_mc5_psi_2 = abs(metrics5['max_mc_psi_2'].values)
+max_rl5_psi_2 = abs(metrics5['max_rl_psi_2'].values)
+MU_max_mc5_psi_2, SIGMA_max_mc5_psi_2, MU_max_rl5_psi_2, SIGMA_max_rl5_psi_2 = \
+    welch_test(max_mc5_psi_2, max_rl5_psi_2, name1='max_mc5_psi_2', name2='max_rl5_psi_2')
+
+mc_max_psi_2 = [MU_max_mc1_psi_2, MU_max_mc2_psi_2, MU_max_mc3_psi_2, MU_max_mc4_psi_2, MU_max_mc5_psi_2]
+mc_max_psi_2_std = [SIGMA_max_mc1_psi_2, SIGMA_max_mc2_psi_2, SIGMA_max_mc3_psi_2, 
+                    SIGMA_max_mc4_psi_2, SIGMA_max_mc5_psi_2]
+rects9 = ax2[1].bar(index, mc_max_psi_2, bar_width, yerr=mc_max_psi_2_std, alpha=opacity, 
+                    color='k', capsize=10, label='modern controls')
+
+rl_max_psi_2 = [MU_max_rl1_psi_2, MU_max_rl2_psi_2, MU_max_rl3_psi_2, MU_max_rl4_psi_2, MU_max_rl5_psi_2]
+rl_max_psi_2_std = [SIGMA_max_rl1_psi_2, SIGMA_max_rl2_psi_2, SIGMA_max_rl3_psi_2, 
+                    SIGMA_max_rl4_psi_2, SIGMA_max_rl5_psi_2]
+
+rects10 = ax2[1].bar(index+bar_width, rl_max_psi_2, bar_width, yerr=rl_max_psi_2_std, 
+                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
+max_mc1_d2 = abs(metrics1['max_mc_d2'].values)
+max_rl1_d2 = abs(metrics1['max_rl_d2'].values)
+MU_max_mc1_d2, SIGMA_max_mc1_d2, MU_max_rl1_d2, SIGMA_max_rl1_d2 = \
+    welch_test(max_mc1_d2, max_rl1_d2, name1='max_mc1_d2', name2='max_rl1_d2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_2 ~~~~~~~~~~~~~~~')
+max_mc2_d2 = abs(metrics2['max_mc_d2'].values)
+max_rl2_d2 = abs(metrics2['max_rl_d2'].values)
+MU_max_mc2_d2, SIGMA_max_mc2_d2, MU_max_rl2_d2, SIGMA_max_rl2_d2 = \
+    welch_test(max_mc2_d2, max_rl2_d2, name1='max_mc2_d2', name2='max_rl2_d2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_3 ~~~~~~~~~~~~~~~')
+max_mc3_d2 = abs(metrics3['max_mc_d2'].values)
+max_rl3_d2 = abs(metrics3['max_rl_d2'].values)
+MU_max_mc3_d2, SIGMA_max_mc3_d2, MU_max_rl3_d2, SIGMA_max_rl3_d2 = \
+    welch_test(max_mc3_d2, max_rl3_d2, name1='max_mc3_d2', name2='max_rl3_d2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_4 ~~~~~~~~~~~~~~~')
+max_mc4_d2 = abs(metrics4['max_mc_d2'].values)
+max_rl4_d2 = abs(metrics4['max_rl_d2'].values)
+MU_max_mc4_d2, SIGMA_max_mc4_d2, MU_max_rl4_d2, SIGMA_max_rl4_d2 = \
+    welch_test(max_mc4_d2, max_rl4_d2, name1='max_mc4_d2', name2='max_rl4_d2')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_5 ~~~~~~~~~~~~~~~')
+max_mc5_d2 = abs(metrics5['max_mc_d2'].values)
+max_rl5_d2 = abs(metrics5['max_rl_d2'].values)
+MU_max_mc5_d2, SIGMA_max_mc5_d2, MU_max_rl5_d2, SIGMA_max_rl5_d2 = \
+    welch_test(max_mc5_d2, max_rl5_d2, name1='max_mc5_d2', name2='max_rl5_d2')
+
+mc_max_d2 = [MU_max_mc1_d2, MU_max_mc2_d2, MU_max_mc3_d2, MU_max_mc4_d2, MU_max_mc5_d2]
+mc_max_d2_std = [SIGMA_max_mc1_d2, SIGMA_max_mc2_d2, SIGMA_max_mc3_d2, 
+                    SIGMA_max_mc4_d2, SIGMA_max_mc5_d2]
+rects11 = ax2[2].bar(index, mc_max_d2, bar_width, yerr=mc_max_d2_std, alpha=opacity, 
+                    color='k', capsize=10, label='modern controls')
+
+rl_max_d2 = [MU_max_rl1_d2, MU_max_rl2_d2, MU_max_rl3_d2, MU_max_rl4_d2, MU_max_rl5_d2]
+rl_max_d2_std = [SIGMA_max_rl1_d2, SIGMA_max_rl2_d2, SIGMA_max_rl3_d2, 
+                    SIGMA_max_rl4_d2, SIGMA_max_rl5_d2]
+
+rects12 = ax2[2].bar(index+bar_width, rl_max_d2, bar_width, yerr=rl_max_d2_std, 
+                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+
 plt.tight_layout()
+ax2[0].legend()
 
-'''
-n_bins = 40
-fig3, ax3 = plt.subplots(1, 2, sharey=True, tight_layout=True)
-ax3[0].hist(rms_mc_psi_1, bins=n_bins)
-ax3[0].set_ylabel('Frequency')
-ax3[1].hist(rms_rl_psi_1, bins=n_bins)
-ax3[0].title.set_text('Modern Controls')
-ax3[1].title.set_text('Reinforcement Learning')
-ax3[0].set_xlabel(r'rms $\psi_{1} [rad]$')
-ax3[1].set_xlabel(r'rms $\psi_{1} [rad]$')
-'''
+# Goal
+fig3, ax3 = plt.subplots(1, 2, figsize=(20, 10), sharex=True)
+index = np.arange(5)
+bar_width = 0.35 / 2
+opacity = 0.8
+
+ax3[0].set_ylabel(r' goal $d_{2} [m]$')
+ax3[0].set_xlabel(foldername.strip('/') + '[m]')
+ax3[0].set_xticks(index+bar_width/2)
+ax3[0].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
+
+ax3[1].set_ylabel(r' goal $\psi_{2} [rad]$')
+ax3[1].set_xlabel(foldername.strip('/') + '[m]')
+ax3[1].set_xticks(index+bar_width/2)
+ax3[1].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
+mc1_min_d = metrics1['mc_min_d'].values
+rl1_min_d = metrics1['rl_min_d'].values
+MU_mc1_min_d, SIGMA_mc1_min_d, MU_rl1_min_d, SIGMA_rl1_min_d = \
+    welch_test(mc1_min_d, rl1_min_d, name1='rl1_min_d', name2='rl1_min_d')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_2 ~~~~~~~~~~~~~~~')
+mc2_min_d = metrics2['mc_min_d'].values
+rl2_min_d = metrics2['rl_min_d'].values
+MU_mc2_min_d, SIGMA_mc2_min_d, MU_rl2_min_d, SIGMA_rl2_min_d = \
+    welch_test(mc2_min_d, rl2_min_d, name1='rl2_min_d', name2='rl2_min_d')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_3 ~~~~~~~~~~~~~~~')
+mc3_min_d = metrics3['mc_min_d'].values
+rl3_min_d = metrics3['rl_min_d'].values
+MU_mc3_min_d, SIGMA_mc3_min_d, MU_rl3_min_d, SIGMA_rl3_min_d = \
+    welch_test(mc3_min_d, rl3_min_d, name1='rl3_min_d', name2='rl3_min_d')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_4 ~~~~~~~~~~~~~~~')
+mc4_min_d = metrics4['mc_min_d'].values
+rl4_min_d = metrics4['rl_min_d'].values
+MU_mc4_min_d, SIGMA_mc4_min_d, MU_rl4_min_d, SIGMA_rl4_min_d = \
+    welch_test(mc4_min_d, rl4_min_d, name1='rl4_min_d', name2='rl4_min_d')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_5 ~~~~~~~~~~~~~~~')
+mc5_min_d = metrics5['mc_min_d'].values
+rl5_min_d = metrics5['rl_min_d'].values
+MU_mc5_min_d, SIGMA_mc5_min_d, MU_rl5_min_d, SIGMA_rl5_min_d = \
+    welch_test(mc5_min_d, rl5_min_d, name1='rl5_min_d', name2='rl5_min_d')
+
+
+mc_min_d = [MU_mc1_min_d, MU_mc2_min_d, MU_mc3_min_d, MU_mc4_min_d, MU_mc5_min_d]
+mc_min_d_std = [SIGMA_mc1_min_d, SIGMA_mc2_min_d, SIGMA_mc3_min_d, 
+                    SIGMA_mc4_min_d, SIGMA_mc5_min_d]
+rects13 = ax3[0].bar(index, mc_min_d, bar_width, yerr=mc_min_d_std, alpha=opacity, 
+                    color='k', capsize=10, label='modern controls')
+
+rl_min_d = [MU_rl1_min_d, MU_rl2_min_d, MU_rl3_min_d, MU_rl4_min_d, MU_rl5_min_d]
+rl_min_d_std = [SIGMA_rl1_min_d, SIGMA_rl2_min_d, SIGMA_rl3_min_d, 
+                    SIGMA_rl4_min_d, SIGMA_rl5_min_d]
+
+rects14 = ax3[0].bar(index+bar_width, rl_min_d, bar_width, yerr=rl_min_d_std, 
+                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
+mc1_min_psi = abs(metrics1['mc_min_psi'].values)
+rl1_min_psi = abs(metrics1['rl_min_psi'].values)
+MU_mc1_min_psi, SIGMA_mc1_min_psi, MU_rl1_min_psi, SIGMA_rl1_min_psi = \
+    welch_test(mc1_min_psi, rl1_min_psi, name1='rl1_min_psi', name2='rl1_min_psi')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_2 ~~~~~~~~~~~~~~~')
+mc2_min_psi = abs(metrics2['mc_min_psi'].values)
+rl2_min_psi = abs(metrics2['rl_min_psi'].values)
+MU_mc2_min_psi, SIGMA_mc2_min_psi, MU_rl2_min_psi, SIGMA_rl2_min_psi = \
+    welch_test(mc2_min_psi, rl2_min_psi, name1='rl2_min_psi', name2='rl2_min_psi')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_3 ~~~~~~~~~~~~~~~')
+mc3_min_psi = abs(metrics3['mc_min_psi'].values)
+rl3_min_psi = abs(metrics3['rl_min_psi'].values)
+MU_mc3_min_psi, SIGMA_mc3_min_psi, MU_rl3_min_psi, SIGMA_rl3_min_psi = \
+    welch_test(mc3_min_psi, rl3_min_psi, name1='rl3_min_psi', name2='rl3_min_psi')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_4 ~~~~~~~~~~~~~~~')
+mc4_min_psi = abs(metrics4['mc_min_psi'].values)
+rl4_min_psi = abs(metrics4['rl_min_psi'].values)
+MU_mc4_min_psi, SIGMA_mc4_min_psi, MU_rl4_min_psi, SIGMA_rl4_min_psi = \
+    welch_test(mc4_min_psi, rl4_min_psi, name1='rl4_min_psi', name2='rl4_min_psi')
+
+print('~~~~~~~~~~~~~' + foldername.strip('/') + '_5 ~~~~~~~~~~~~~~~')
+mc5_min_psi = abs(metrics5['mc_min_psi'].values)
+rl5_min_psi = abs(metrics5['rl_min_psi'].values)
+MU_mc5_min_psi, SIGMA_mc5_min_psi, MU_rl5_min_psi, SIGMA_rl5_min_psi = \
+    welch_test(mc5_min_psi, rl5_min_psi, name1='rl5_min_psi', name2='rl5_min_psi')
+
+mc_min_psi = [MU_mc1_min_psi, MU_mc2_min_psi, MU_mc3_min_psi, MU_mc4_min_psi, MU_mc5_min_psi]
+mc_min_psi_std = [SIGMA_mc1_min_psi, SIGMA_mc2_min_psi, SIGMA_mc3_min_psi, 
+                    SIGMA_mc4_min_psi, SIGMA_mc5_min_psi]
+rects13 = ax3[1].bar(index, mc_min_psi, bar_width, yerr=mc_min_psi_std, alpha=opacity, 
+                    color='k', capsize=10, label='modern controls')
+
+rl_min_psi = [MU_rl1_min_psi, MU_rl2_min_psi, MU_rl3_min_psi, MU_rl4_min_psi, MU_rl5_min_psi]
+rl_min_psi_std = [SIGMA_rl1_min_psi, SIGMA_rl2_min_psi, SIGMA_rl3_min_psi, 
+                    SIGMA_rl4_min_psi, SIGMA_rl5_min_psi]
+
+rects14 = ax3[1].bar(index+bar_width, rl_min_psi, bar_width, yerr=rl_min_psi_std, 
+                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+
+plt.tight_layout()
+ax3[0].legend()
+
+# Histogram
+'''n_bins = 40
+fig4, ax4 = plt.subplots(1, 2, sharey=True, tight_layout=True)
+ax4[0].hist(rms_mc1_psi_1, bins=n_bins)
+ax4[0].set_ylabel('Frequency')
+ax4[1].hist(rms_rl1_psi_1, bins=n_bins)
+ax4[0].title.set_text('Modern Controls')
+ax4[1].title.set_text('Reinforcement Learning')
+ax4[0].set_xlabel(r'rms $\psi_{1} [rad]$')
+ax4[1].set_xlabel(r'rms $\psi_{1} [rad]$')'''
 
 # rms_mc_psi_1, rms_mc_psi_2, rms_mc_d2
 # rms_rl_psi_1, rms_rl_psi_2, rms_rl_d2
@@ -283,10 +504,4 @@ ax3[1].set_xlabel(r'rms $\psi_{1} [rad]$')
 # mc_min_d, mc_min_psi
 # rl_min_d, rl_min_psi
 
-# Goal
-mc_min_d = metrics1['mc_min_d'].values
-rl_min_d = metrics1['rl_min_d'].values
-
-mc_min_psi = metrics1['mc_min_psi'].values
-rl_min_psi = metrics1['rl_min_psi'].values
-
+plt.show()
