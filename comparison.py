@@ -29,7 +29,7 @@ PARAMS = [12.192, 11.192, 10.192, 9.192, 8.192]
 #PARAM_LABEL = 'velocity'
 #PARAMS = [-1.118, -1.564, -2.012, -2.459, -2.906]
 
-K = np.array([-3.7896, 12.8011, -1.0])
+K = np.array([-27.6062, 99.8296, -7.8540])
 DEMONSTRATIONS = 2
 
 def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
@@ -52,7 +52,7 @@ def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
                 print('hide render...')
         if start_rendering:
             env.render()
-        a = K.dot(s[0:3]) + s[3]
+        a = K.dot(s)
         s_, r, done, info = env.step(a)
         
         if done:

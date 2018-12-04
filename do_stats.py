@@ -229,17 +229,17 @@ index = np.arange(5)
 bar_width = 0.35 / 2
 opacity = 0.8
 
-ax2[0].set_ylabel(r'rms $\psi_{2} [rad]$')
+ax2[0].set_ylabel(r'max $\psi_{1} [rad]$')
 ax2[0].set_xlabel(foldername.strip('/') + '[m]')
 ax2[0].set_xticks(index+bar_width/2)
 ax2[0].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
 
-ax2[1].set_ylabel(r'rms $\psi_{2} [rad]$')
+ax2[1].set_ylabel(r'max $\psi_{2} [rad]$')
 ax2[1].set_xlabel(foldername.strip('/') + '[m]')
 ax2[1].set_xticks(index+bar_width/2)
 ax2[1].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
 
-ax2[2].set_ylabel(r'rms $d_{2} [m]$')
+ax2[2].set_ylabel(r'max $d_{2} [m]$')
 ax2[2].set_xlabel(foldername.strip('/') + '[m]')
 ax2[2].set_xticks(index+bar_width/2)
 ax2[2].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
