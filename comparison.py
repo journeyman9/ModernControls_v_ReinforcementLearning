@@ -3,6 +3,7 @@ import random
 import gym.spaces
 import numpy as np
 import tensorflow as tf
+tf.contrib.resampler
 import matplotlib.pyplot as plt
 import pdb
 from datetime import datetime
@@ -17,8 +18,8 @@ import scipy.stats as stats
 import matplotlib.pyplot as plt
 
 SEED = 0
-SEED_ID = [0, 1]
-LABEL = 'trailer'
+SEED_ID = [0]
+LABEL = 'reward_A'
 
 PARAM_LABEL = 'wheelbase'
 PARAMS = [12.192, 11.192, 10.192, 9.192, 8.192]
@@ -73,7 +74,7 @@ def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
         steps += 1
     return total_reward, info, q0, qg, start_rendering
 
-def test_rl(env, policy, q_value, state_a, state_c, action, train_phase, sess, 
+def test_rl(env, policy, q_value, state_a, state_c, action, train_phase_a, train_phase_c, sess, 
             rl_psi_1_log, rl_psi_2_log, rl_d2_log, rl_t_log, rl_a_log, rl_q_log, 
             q0, qg, start_rendering):
     done = False
@@ -102,7 +103,7 @@ def test_rl(env, policy, q_value, state_a, state_c, action, train_phase, sess,
         if start_rendering:
             env.render()
         a = sess.run(policy, feed_dict={state_a: s.reshape(1, s.shape[0]),
-                                        train_phase: False})[0]
+                                        train_phase_a: False})[0]
         s_, r, done, info = env.step(a)
         
         if done:
@@ -118,7 +119,8 @@ def test_rl(env, policy, q_value, state_a, state_c, action, train_phase, sess,
         rl_d2_log.append(s_[2])
         rl_a_log.append(a[0])
         rl_q_log.append(sess.run(q_value, feed_dict={state_c: s.reshape(1, s.shape[0]),
-                                                     action: a.reshape(1, a.shape[0])})[0, 0])
+                                                     action: a.reshape(1, a.shape[0]),
+                                                     train_phase_c: False})[0, 0])
 
         s = s_
         total_reward += r
@@ -260,7 +262,8 @@ if __name__ == '__main__':
                     state_c = sess.graph.get_tensor_by_name('Critic/s:0')
                     action = sess.graph.get_tensor_by_name('Critic/a:0')
                     q_value = sess.graph.get_tensor_by_name('Critic/Q_online_network/Q_hat/add:0')
-                    train_phase = sess.graph.get_tensor_by_name('Actor/train_phase_actor:0')
+                    train_phase_a = sess.graph.get_tensor_by_name('Actor/train_phase_actor:0')
+                    train_phase_c = sess.graph.get_tensor_by_name('Critic/train_phase_critic:0')
                     learned_policy = sess.graph.get_tensor_by_name(
                                             'Actor/pi_online_network/pi_hat/Mul_4:0')
                     rl_psi_1_log = []
@@ -270,7 +273,7 @@ if __name__ == '__main__':
                     rl_a_log = []
                     rl_q_log = []
                     r, info = test_rl(env, learned_policy, q_value, state_a, state_c, action, 
-                                      train_phase, sess, rl_psi_1_log, rl_psi_2_log,
+                                      train_phase_a, train_phase_c, sess, rl_psi_1_log, rl_psi_2_log,
                                       rl_d2_log, rl_t_log, rl_a_log, rl_q_log, 
                                       q0, qg, start_rendering)
                     if seed_idx < 1:
