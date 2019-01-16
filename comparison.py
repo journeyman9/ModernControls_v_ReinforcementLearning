@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 
 SEED = 0
 SEED_ID = [0]
-LABEL = 'reward_A'
+LABEL = 'transfer_3_to_25'
 
 PARAM_LABEL = 'wheelbase'
 PARAMS = [12.192, 11.192, 10.192, 9.192, 8.192]
@@ -29,9 +29,8 @@ PARAMS = [12.192, 11.192, 10.192, 9.192, 8.192]
 
 #PARAM_LABEL = 'velocity'
 #PARAMS = [-1.118, -1.564, -2.012, -2.459, -2.906]
-
-K = np.array([-27.6062, 99.8296, -7.8540])
-DEMONSTRATIONS = 2
+K = np.array([-27.606229206749300, 99.829605935742920, -7.853981633974539]) 
+DEMONSTRATIONS = 100
 
 def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
             start_rendering): 
@@ -53,7 +52,7 @@ def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
                 print('hide render...')
         if start_rendering:
             env.render()
-        a = K.dot(s)
+        a = np.clip(K.dot(s), env.action_space.low, env.action_space.high)
         s_, r, done, info = env.step(a)
         
         if done:
@@ -170,6 +169,8 @@ if __name__ == '__main__':
         mc_min_psi = []
         mc_t = []
         mc_a = []
+        mc_dist_too_large = []
+        mc_angle_too_large = []
 
         ## Reinforcement Learning
         rms_rl_psi_1 = []
@@ -188,6 +189,8 @@ if __name__ == '__main__':
         rl_t = []
         rl_a = []
         rl_q = []
+        rl_dist_too_large = []
+        rl_angle_too_large = []
     
         for demo in range(DEMONSTRATIONS):
             ## Modern Controls
@@ -214,6 +217,8 @@ if __name__ == '__main__':
             mc_min_d.append(info['min_d'])
             mc_min_psi.append(info['min_psi'])
             mc_t.append(info['t'])
+            mc_dist_too_large.append(info['dist_too_large'])
+            mc_angle_too_large.append(info['angle_too_large'])
             df = pd.DataFrame({'time' : mc_t_log,
                                'mc_psi_1' : mc_psi_1_log, 
                                'mc_psi_2' : mc_psi_2_log, 
@@ -235,6 +240,8 @@ if __name__ == '__main__':
                                   '# times_up: {}\n'.format(mc_times_up[demo]) +
                                   '# fin: {}\n'.format(mc_fin[demo]) +
                                   '# t: {:.3f}\n'.format(mc_t[demo]) +
+                                  '# dist_too_large: {}\n'.format(mc_dist_too_large[demo]) +
+                                  '# angle_too_large: {}\n'.format(mc_angle_too_large[demo]) +
                                   '# min_d: {:.3f} \n'.format(mc_min_d[demo]) +
                                   '# min_psi: {:.3f}\n\n'.format(mc_min_psi[demo]) +
                                   '# rms_psi_1: {:.3f}\n'.format(rms_mc_psi_1[demo]) +
@@ -291,6 +298,8 @@ if __name__ == '__main__':
                         rl_min_d.append(info['min_d'])
                         rl_min_psi.append(info['min_psi'])
                         rl_t.append(info['t'])
+                        rl_dist_too_large.append(info['dist_too_large'])
+                        rl_angle_too_large.append(info['angle_too_large'])
                     df = pd.DataFrame({'time' : rl_t_log,
                                        'rl_psi_1' : rl_psi_1_log, 
                                        'rl_psi_2' : rl_psi_2_log, 
@@ -307,6 +316,8 @@ if __name__ == '__main__':
                                               '# times_up: {}\n'.format(rl_times_up[demo]) +
                                               '# fin: {}\n'.format(rl_fin[demo]) +
                                               '# t: {:.3f}\n'.format(rl_t[demo]) +
+                                              '# dist_too_large: {}\n'.format(rl_dist_too_large[demo]) + 
+                                              '# angle_too_large: {}\n'.format(rl_angle_too_large[demo]) +
                                               '# min_d: {:.3f} \n'.format(rl_min_d[demo]) +
                                               '# min_psi: {:.3f}\n\n'.format(rl_min_psi[demo]) +
                                               '# rms_psi_1: {:.3f}\n'.format(rms_rl_psi_1[demo]) +
@@ -375,9 +386,13 @@ if __name__ == '__main__':
                            'rl_min_d': rl_min_d, 'rl_min_psi' : rl_min_psi,
                            'mc_goal_flag' : mc_goal_flag, 'mc_jackknife' : mc_jackknife,
                            'mc_out_of_bounds' : mc_out_of_bounds, 'mc_times_up' : mc_times_up,
+                           'mc_dist_too_large' : mc_dist_too_large,
+                           'mc_angle_too_large' : mc_angle_too_large,
                            'mc_fin' : mc_fin, 'mc_t': mc_t, 
                            'rl_goal_flag' : rl_goal_flag, 'rl_jackknife' : rl_jackknife,
                            'rl_out_of_bounds' : rl_out_of_bounds, 'rl_times_up' : rl_times_up,
+                           'rl_dist_too_large' : rl_dist_too_large,
+                           'rl_angle_too_large' : rl_angle_too_large,
                            'rl_fin' : rl_fin, 'rl_t' : rl_t})
         
         with open('./' + str(PARAM_LABEL) + '/' + 'stat_me_' + PARAM_LABEL + '_' + 
@@ -386,11 +401,15 @@ if __name__ == '__main__':
                               '# mc_jackknife: {}\n'.format(sum(mc_jackknife)) + 
                               '# mc_out_of_bounds: {}\n'.format(sum(mc_out_of_bounds)) +
                               '# mc_times_up: {}\n'.format(sum(mc_times_up)) +
+                              '# mc_dist_too_large: {}\n'.format(sum(mc_dist_too_large)) +
+                              '# mc_angle_too_large: {}\n'.format(sum(mc_angle_too_large)) + 
                               '# mc_fin: {}\n\n'.format(sum(mc_fin)) + 
                               '# rl_goal: {}\n'.format(sum(rl_goal_flag)) +
                               '# rl_jackknife: {}\n'.format(sum(rl_jackknife)) + 
                               '# rl_out_of_bounds: {}\n'.format(sum(rl_out_of_bounds)) +
                               '# rl_times_up: {}\n'.format(sum(rl_times_up)) +
+                              '# rl_dist_too_large: {}\n'.format(sum(rl_dist_too_large)) +
+                              '# rl_angle_too_large: {}\n'.format(sum(rl_angle_too_large)) +
                               '# rl_fin: {}\n\n'.format(sum(rl_fin)) )
 
             df.to_csv(filename, sep='\t', index=False, mode='a')
