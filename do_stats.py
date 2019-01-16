@@ -65,6 +65,8 @@ def welch_test(data1, data2, alpha=0.05, tail=2, name1='mu_1', name2='mu_2'):
     else:
         print('\nNeed more samples for {} and {}'.format(name1, name2) +\
               ' p > alpha: {} > {}'.format(p, alpha))
+        print(str(name1) + ' = {:.3f} +- {:.3f}, '.format(MU_1, SIGMA_1) + \
+              str(name2) + ' = {:.3f} +- {:.3f}'.format(MU_2, SIGMA_2))
     return MU_1, SIGMA_1, MU_2, SIGMA_2
 
 # RMS
@@ -83,11 +85,16 @@ ax1[1].set_xlabel(foldername.strip('/') + '[m]')
 ax1[1].set_xticks(index+bar_width/2)
 ax1[1].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
 
-ax1[2].set_ylabel(r'rms $d_{2} [m]$')
+ax1[2].set_ylabel(r'rms $y_{2} [m]$')
 ax1[2].set_xlabel(foldername.strip('/') + '[m]')
 ax1[2].set_xticks(index+bar_width/2)
 ax1[2].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
 
+print()
+print('***************************')
+print('RMS Psi_1')
+print('***************************')
+print()
 print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
 rms_mc1_psi_1 = metrics1['rms_mc_psi_1'].values
 rms_rl1_psi_1 = metrics1['rms_rl_psi_1'].values
@@ -122,16 +129,21 @@ mc_rms_psi_1 = [MU_rms_mc1_psi_1, MU_rms_mc2_psi_1, MU_rms_mc3_psi_1, MU_rms_mc4
 mc_rms_psi_1_std = [SIGMA_rms_mc1_psi_1, SIGMA_rms_mc2_psi_1, SIGMA_rms_mc3_psi_1, 
                     SIGMA_rms_mc4_psi_1, SIGMA_rms_mc5_psi_1]
 rects1 = ax1[0].bar(index, mc_rms_psi_1, bar_width, yerr=mc_rms_psi_1_std, alpha=opacity, 
-                    color='k', capsize=10, label='modern controls')
+                    color='k', capsize=10, label='LQR')
 
 rl_rms_psi_1 = [MU_rms_rl1_psi_1, MU_rms_rl2_psi_1, MU_rms_rl3_psi_1, MU_rms_rl4_psi_1, MU_rms_rl5_psi_1]
 rl_rms_psi_1_std = [SIGMA_rms_rl1_psi_1, SIGMA_rms_rl2_psi_1, SIGMA_rms_rl3_psi_1, 
                     SIGMA_rms_rl4_psi_1, SIGMA_rms_rl5_psi_1]
 
 rects2 = ax1[0].bar(index+bar_width, rl_rms_psi_1, bar_width, yerr=rl_rms_psi_1_std, 
-                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+                    alpha=opacity, color='b', capsize=10, label='DDPG')
 ax1[0].legend()
 
+print()
+print('***************************')
+print('RMS Psi_2')
+print('***************************')
+print()
 print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
 rms_mc1_psi_2 = metrics1['rms_mc_psi_2'].values
 rms_rl1_psi_2 = metrics1['rms_rl_psi_2'].values
@@ -167,16 +179,20 @@ mc_rms_psi_2 = [MU_rms_mc1_psi_2, MU_rms_mc2_psi_2, MU_rms_mc3_psi_2, MU_rms_mc4
 mc_rms_psi_2_std = [SIGMA_rms_mc1_psi_2, SIGMA_rms_mc2_psi_2, SIGMA_rms_mc3_psi_2, 
                     SIGMA_rms_mc4_psi_2, SIGMA_rms_mc5_psi_2]
 rects3 = ax1[1].bar(index, mc_rms_psi_2, bar_width, yerr=mc_rms_psi_2_std, alpha=opacity, 
-                    color='k', capsize=10, label='modern controls')
+                    color='k', capsize=10, label='LQR')
 
 rl_rms_psi_2 = [MU_rms_rl1_psi_2, MU_rms_rl2_psi_2, MU_rms_rl3_psi_2, MU_rms_rl4_psi_2, MU_rms_rl5_psi_2]
 rl_rms_psi_2_std = [SIGMA_rms_rl1_psi_2, SIGMA_rms_rl2_psi_2, SIGMA_rms_rl3_psi_2, 
                     SIGMA_rms_rl4_psi_2, SIGMA_rms_rl5_psi_2]
 
 rects4 = ax1[1].bar(index+bar_width, rl_rms_psi_2, bar_width, yerr=rl_rms_psi_2_std, 
-                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+                    alpha=opacity, color='b', capsize=10, label='DDPG')
 
-
+print()
+print('***************************')
+print('RMS y2')
+print('***************************')
+print()
 print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
 rms_mc1_d2 = metrics1['rms_mc_d2'].values
 rms_rl1_d2 = metrics1['rms_rl_d2'].values
@@ -212,14 +228,14 @@ mc_rms_d2 = [MU_rms_mc1_d2, MU_rms_mc2_d2, MU_rms_mc3_d2, MU_rms_mc4_d2, MU_rms_
 mc_rms_d2_std = [SIGMA_rms_mc1_d2, SIGMA_rms_mc2_d2, SIGMA_rms_mc3_d2, 
                     SIGMA_rms_mc4_d2, SIGMA_rms_mc5_d2]
 rects5 = ax1[2].bar(index, mc_rms_d2, bar_width, yerr=mc_rms_d2_std, alpha=opacity, 
-                    color='k', capsize=10, label='modern controls')
+                    color='k', capsize=10, label='LQR')
 
 rl_rms_d2 = [MU_rms_rl1_d2, MU_rms_rl2_d2, MU_rms_rl3_d2, MU_rms_rl4_d2, MU_rms_rl5_d2]
 rl_rms_d2_std = [SIGMA_rms_rl1_d2, SIGMA_rms_rl2_d2, SIGMA_rms_rl3_d2, 
                     SIGMA_rms_rl4_d2, SIGMA_rms_rl5_d2]
 
 rects6 = ax1[2].bar(index+bar_width, rl_rms_d2, bar_width, yerr=rl_rms_d2_std, 
-                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+                    alpha=opacity, color='b', capsize=10, label='DDPG')
 
 plt.tight_layout()
 
@@ -239,11 +255,16 @@ ax2[1].set_xlabel(foldername.strip('/') + '[m]')
 ax2[1].set_xticks(index+bar_width/2)
 ax2[1].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
 
-ax2[2].set_ylabel(r'max $d_{2} [m]$')
+ax2[2].set_ylabel(r'max $y_{2} [m]$')
 ax2[2].set_xlabel(foldername.strip('/') + '[m]')
 ax2[2].set_xticks(index+bar_width/2)
 ax2[2].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
 
+print()
+print('***************************')
+print('Max psi_1')
+print('***************************')
+print()
 print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
 max_mc1_psi_1 = abs(metrics1['max_mc_psi_1'].values)
 max_rl1_psi_1 = abs(metrics1['max_rl_psi_1'].values)
@@ -278,16 +299,20 @@ mc_max_psi_1 = [MU_max_mc1_psi_1, MU_max_mc2_psi_1, MU_max_mc3_psi_1, MU_max_mc4
 mc_max_psi_1_std = [SIGMA_max_mc1_psi_1, SIGMA_max_mc2_psi_1, SIGMA_max_mc3_psi_1, 
                     SIGMA_max_mc4_psi_1, SIGMA_max_mc5_psi_1]
 rects7 = ax2[0].bar(index, mc_max_psi_1, bar_width, yerr=mc_max_psi_1_std, alpha=opacity, 
-                    color='k', capsize=10, label='modern controls')
+                    color='k', capsize=10, label='LQR')
 
 rl_max_psi_1 = [MU_max_rl1_psi_1, MU_max_rl2_psi_1, MU_max_rl3_psi_1, MU_max_rl4_psi_1, MU_max_rl5_psi_1]
 rl_max_psi_1_std = [SIGMA_max_rl1_psi_1, SIGMA_max_rl2_psi_1, SIGMA_max_rl3_psi_1, 
                     SIGMA_max_rl4_psi_1, SIGMA_max_rl5_psi_1]
 
 rects8 = ax2[0].bar(index+bar_width, rl_max_psi_1, bar_width, yerr=rl_max_psi_1_std, 
-                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+                    alpha=opacity, color='b', capsize=10, label='DDPG')
 
-
+print()
+print('***************************')
+print('Max psi_2')
+print('***************************')
+print()
 print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
 max_mc1_psi_2 = abs(metrics1['max_mc_psi_2'].values)
 max_rl1_psi_2 = abs(metrics1['max_rl_psi_2'].values)
@@ -322,15 +347,20 @@ mc_max_psi_2 = [MU_max_mc1_psi_2, MU_max_mc2_psi_2, MU_max_mc3_psi_2, MU_max_mc4
 mc_max_psi_2_std = [SIGMA_max_mc1_psi_2, SIGMA_max_mc2_psi_2, SIGMA_max_mc3_psi_2, 
                     SIGMA_max_mc4_psi_2, SIGMA_max_mc5_psi_2]
 rects9 = ax2[1].bar(index, mc_max_psi_2, bar_width, yerr=mc_max_psi_2_std, alpha=opacity, 
-                    color='k', capsize=10, label='modern controls')
+                    color='k', capsize=10, label='LQR')
 
 rl_max_psi_2 = [MU_max_rl1_psi_2, MU_max_rl2_psi_2, MU_max_rl3_psi_2, MU_max_rl4_psi_2, MU_max_rl5_psi_2]
 rl_max_psi_2_std = [SIGMA_max_rl1_psi_2, SIGMA_max_rl2_psi_2, SIGMA_max_rl3_psi_2, 
                     SIGMA_max_rl4_psi_2, SIGMA_max_rl5_psi_2]
 
 rects10 = ax2[1].bar(index+bar_width, rl_max_psi_2, bar_width, yerr=rl_max_psi_2_std, 
-                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+                    alpha=opacity, color='b', capsize=10, label='DDPG')
 
+print()
+print('***************************')
+print('Max y_2')
+print('***************************')
+print()
 print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
 max_mc1_d2 = abs(metrics1['max_mc_d2'].values)
 max_rl1_d2 = abs(metrics1['max_rl_d2'].values)
@@ -365,14 +395,14 @@ mc_max_d2 = [MU_max_mc1_d2, MU_max_mc2_d2, MU_max_mc3_d2, MU_max_mc4_d2, MU_max_
 mc_max_d2_std = [SIGMA_max_mc1_d2, SIGMA_max_mc2_d2, SIGMA_max_mc3_d2, 
                     SIGMA_max_mc4_d2, SIGMA_max_mc5_d2]
 rects11 = ax2[2].bar(index, mc_max_d2, bar_width, yerr=mc_max_d2_std, alpha=opacity, 
-                    color='k', capsize=10, label='modern controls')
+                    color='k', capsize=10, label='LQR')
 
 rl_max_d2 = [MU_max_rl1_d2, MU_max_rl2_d2, MU_max_rl3_d2, MU_max_rl4_d2, MU_max_rl5_d2]
 rl_max_d2_std = [SIGMA_max_rl1_d2, SIGMA_max_rl2_d2, SIGMA_max_rl3_d2, 
                     SIGMA_max_rl4_d2, SIGMA_max_rl5_d2]
 
 rects12 = ax2[2].bar(index+bar_width, rl_max_d2, bar_width, yerr=rl_max_d2_std, 
-                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+                    alpha=opacity, color='b', capsize=10, label='DDPG')
 
 plt.tight_layout()
 ax2[0].legend()
@@ -393,6 +423,11 @@ ax3[1].set_xlabel(foldername.strip('/') + '[m]')
 ax3[1].set_xticks(index+bar_width/2)
 ax3[1].set_xticklabels([PARAMS[0], PARAMS[1], PARAMS[2], PARAMS[3], PARAMS[4]])
 
+print()
+print('***************************')
+print('minimum d')
+print('***************************')
+print()
 print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
 mc1_min_d = metrics1['mc_min_d'].values
 rl1_min_d = metrics1['rl_min_d'].values
@@ -428,16 +463,20 @@ mc_min_d = [MU_mc1_min_d, MU_mc2_min_d, MU_mc3_min_d, MU_mc4_min_d, MU_mc5_min_d
 mc_min_d_std = [SIGMA_mc1_min_d, SIGMA_mc2_min_d, SIGMA_mc3_min_d, 
                     SIGMA_mc4_min_d, SIGMA_mc5_min_d]
 rects13 = ax3[0].bar(index, mc_min_d, bar_width, yerr=mc_min_d_std, alpha=opacity, 
-                    color='k', capsize=10, label='modern controls')
+                    color='k', capsize=10, label='LQR')
 
 rl_min_d = [MU_rl1_min_d, MU_rl2_min_d, MU_rl3_min_d, MU_rl4_min_d, MU_rl5_min_d]
 rl_min_d_std = [SIGMA_rl1_min_d, SIGMA_rl2_min_d, SIGMA_rl3_min_d, 
                     SIGMA_rl4_min_d, SIGMA_rl5_min_d]
 
 rects14 = ax3[0].bar(index+bar_width, rl_min_d, bar_width, yerr=rl_min_d_std, 
-                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+                    alpha=opacity, color='b', capsize=10, label='DDPG')
 
-
+print()
+print('***************************')
+print('minimum psi_2')
+print('***************************')
+print()
 print('~~~~~~~~~~~~~' + foldername.strip('/') + '_1 ~~~~~~~~~~~~~~~')
 mc1_min_psi = abs(metrics1['mc_min_psi'].values)
 rl1_min_psi = abs(metrics1['rl_min_psi'].values)
@@ -472,14 +511,14 @@ mc_min_psi = [MU_mc1_min_psi, MU_mc2_min_psi, MU_mc3_min_psi, MU_mc4_min_psi, MU
 mc_min_psi_std = [SIGMA_mc1_min_psi, SIGMA_mc2_min_psi, SIGMA_mc3_min_psi, 
                     SIGMA_mc4_min_psi, SIGMA_mc5_min_psi]
 rects13 = ax3[1].bar(index, mc_min_psi, bar_width, yerr=mc_min_psi_std, alpha=opacity, 
-                    color='k', capsize=10, label='modern controls')
+                    color='k', capsize=10, label='LQR')
 
 rl_min_psi = [MU_rl1_min_psi, MU_rl2_min_psi, MU_rl3_min_psi, MU_rl4_min_psi, MU_rl5_min_psi]
 rl_min_psi_std = [SIGMA_rl1_min_psi, SIGMA_rl2_min_psi, SIGMA_rl3_min_psi, 
                     SIGMA_rl4_min_psi, SIGMA_rl5_min_psi]
 
 rects14 = ax3[1].bar(index+bar_width, rl_min_psi, bar_width, yerr=rl_min_psi_std, 
-                    alpha=opacity, color='b', capsize=10, label='reinforcement learning')
+                    alpha=opacity, color='b', capsize=10, label='DDPG')
 
 plt.tight_layout()
 ax3[0].legend()
