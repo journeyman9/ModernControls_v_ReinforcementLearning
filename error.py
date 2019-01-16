@@ -36,18 +36,18 @@ except:
 ## MC Plots
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(10, 10), sharex=True)
 
-ax1.plot(df_mc['time'], np.degrees(df_mc['mc_psi_1']), 'k', label='modern controls')
+ax1.plot(df_mc['time'], np.degrees(df_mc['mc_psi_1']), 'k', label='LQR')
 ax1.set_ylabel(r'$\psi_{1} [\degree]$')
 
 ax2.plot(df_mc['time'], np.degrees(df_mc['mc_psi_1']), 'k')
 ax2.set_ylabel(r'$\psi_{2} [\degree]$')
 
 ax3.plot(df_mc['time'], df_mc['mc_d2'], 'k')
-ax3.set_ylabel(r'$d_{2} [m]$')
+ax3.set_ylabel(r'$y_{2} [m]$')
 ax3.set_xlabel('time [s]')
 
 ## RL Plots
-ax1.plot(df_rl['time'], np.degrees(df_rl['rl_psi_1']), 'b', label='reinforcement learning')
+ax1.plot(df_rl['time'], np.degrees(df_rl['rl_psi_1']), 'b', label='DDPG')
 ax2.plot(df_rl['time'], np.degrees(df_rl['rl_psi_1']), 'b')
 ax3.plot(df_rl['time'], df_rl['rl_d2'], 'b')
 
@@ -69,15 +69,15 @@ opacity = 0.8
 
 mc_rms = [float(mc_metrics['rms_psi_1']), float(mc_metrics['rms_psi_2']), 
           float(mc_metrics['rms_d2'])]
-rects1 = plt.bar(index, mc_rms, bar_width, alpha=opacity, color='k', label='modern controls')
+rects1 = plt.bar(index, mc_rms, bar_width, alpha=opacity, color='k', label='LQR')
 
 rl_rms = [float(rl_metrics['rms_psi_1']), float(rl_metrics['rms_psi_2']), 
           float(rl_metrics['rms_d2'])]
 rects2 = plt.bar(index+bar_width, rl_rms, bar_width, alpha=opacity, color='b', 
-                 label='reinforcement learning')
+                 label='DDPG')
 plt.xlabel('Error Terms')
 plt.ylabel('rms value')
-plt.xticks(index+bar_width/2, (r'$\psi_{1} [rad]$', r'$\psi_{2} [rad]$', r'$d_{2} [m]$'))
+plt.xticks(index+bar_width/2, (r'$\psi_{1} [rad]$', r'$\psi_{2} [rad]$', r'$y_{2} [m]$'))
 plt.legend()
 plt.tight_layout()
 
@@ -89,15 +89,15 @@ opacity = 0.8
 
 mc_max = [abs(float(mc_metrics['max_psi_1'])), abs(float(mc_metrics['max_psi_2'])), 
           abs(float(mc_metrics['max_d2']))]
-rects1 = plt.bar(index, mc_max, bar_width, alpha=opacity, color='k', label='Modern Controls')
+rects1 = plt.bar(index, mc_max, bar_width, alpha=opacity, color='k', label='LQR')
 
 rl_max = [abs(float(rl_metrics['max_psi_1'])), abs(float(rl_metrics['max_psi_2'])), 
           abs(float(rl_metrics['max_d2']))]
 rects2 = plt.bar(index+bar_width, rl_max, bar_width, alpha=opacity, color='b', 
-                 label='Reinforcement Learning')
+                 label='DDPG')
 plt.xlabel('Error Terms')
 plt.ylabel('max value')
-plt.xticks(index+bar_width/2, (r'$\psi_{1} [rad]$', r'$\psi_{2} [rad]$', r'$d_{2} [m]$'))
+plt.xticks(index+bar_width/2, (r'$\psi_{1} [rad]$', r'$\psi_{2} [rad]$', r'$y_{2} [m]$'))
 plt.legend()
 plt.tight_layout()
 
@@ -114,7 +114,7 @@ else:
 
 mc_goal = [mc_goal_flag, float(mc_metrics['min_d']), 
            float(mc_metrics['min_psi'])]
-rects1 = plt.bar(index, mc_goal, bar_width, alpha=opacity, color='k', label='Modern Controls')
+rects1 = plt.bar(index, mc_goal, bar_width, alpha=opacity, color='k', label='LQR')
 
 if rl_metrics['goal'] == 'True':
     rl_goal_flag = 1.0
@@ -124,7 +124,7 @@ else:
 rl_goal = [rl_goal_flag, float(rl_metrics['min_d']), 
            float(rl_metrics['min_psi'])]
 rects2 = plt.bar(index+bar_width, rl_goal, bar_width, alpha=opacity, color='b', 
-                 label='Reinforcement Learning')
+                 label='DDPG')
 plt.ylabel('Criteria')
 plt.xticks(index+bar_width/2, ('Goal [bool]', r'$d2_{min} [m]$', r'$\psi2_{min} [rad]$'))
 plt.legend()
