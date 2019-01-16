@@ -57,6 +57,8 @@ def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
         
         if done:
             print()
+            print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+            print("LQR")
             for key, value in info.items():
                 if value:
                     print(key, value)
@@ -107,6 +109,7 @@ def test_rl(env, policy, q_value, state_a, state_c, action, train_phase_a, train
         
         if done:
             print()
+            print("DDPG")
             for key, value in info.items():
                 if value:
                     print(key, value)
@@ -124,7 +127,7 @@ def test_rl(env, policy, q_value, state_a, state_c, action, train_phase_a, train
         s = s_
         total_reward += r
         steps += 1
-    return total_reward, info
+    return total_reward, info, start_rendering
 
 def rms(x, axis=None):
     return np.sqrt(np.mean(np.square(x), axis=axis))
@@ -279,8 +282,10 @@ if __name__ == '__main__':
                     rl_t_log = []
                     rl_a_log = []
                     rl_q_log = []
-                    r, info = test_rl(env, learned_policy, q_value, state_a, state_c, action, 
-                                      train_phase_a, train_phase_c, sess, rl_psi_1_log, rl_psi_2_log,
+                    r, info, start_rendering = test_rl(env, learned_policy, 
+                                      q_value, state_a, state_c, action, 
+                                      train_phase_a, train_phase_c, sess, 
+                                      rl_psi_1_log, rl_psi_2_log,
                                       rl_d2_log, rl_t_log, rl_a_log, rl_q_log, 
                                       q0, qg, start_rendering)
                     if seed_idx < 1:
@@ -360,7 +365,7 @@ if __name__ == '__main__':
 
                 tf.reset_default_graph()
 
-            env.close()
+            #env.close()
 
         ## Stats -- null hypothesis = equal means assuming equal variance
         # if p-val is smaller than .05, reject null hypothesis
