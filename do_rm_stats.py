@@ -90,8 +90,13 @@ def welch_test(data1, data2, alpha=0.05, tail=2, name1='mu_1', name2='mu_2'):
               str(name2) + ' = {:.3f} +- {:.3f}'.format(MU_2, SIGMA_2))
     return MU_1, SIGMA_1, MU_2, SIGMA_2
 
+plt.rcParams.update({'font.size':18})
+size_fig = (20, 10)
+color_LQR = 'g'
+color_DDPG = 'b'
+
 # RMS
-fig1, ax1 = plt.subplots(1, 3, figsize=(20, 10), sharex=True)
+fig1, ax1 = plt.subplots(1, 3, figsize=size_fig, sharex=True)
 index = np.arange(5)
 bar_width = 0.35 / 2
 opacity = 0.8
@@ -149,15 +154,17 @@ MU_rms_mc5_psi_1, SIGMA_rms_mc5_psi_1, MU_rms_rl5_psi_1, SIGMA_rms_rl5_psi_1 = \
 mc_rms_psi_1 = [MU_rms_mc1_psi_1, MU_rms_mc2_psi_1, MU_rms_mc3_psi_1, MU_rms_mc4_psi_1, MU_rms_mc5_psi_1]
 mc_rms_psi_1_std = [SIGMA_rms_mc1_psi_1, SIGMA_rms_mc2_psi_1, SIGMA_rms_mc3_psi_1, 
                     SIGMA_rms_mc4_psi_1, SIGMA_rms_mc5_psi_1]
-rects1 = ax1[0].bar(index, mc_rms_psi_1, bar_width, yerr=mc_rms_psi_1_std, alpha=opacity, 
-                    color='k', capsize=10, label='LQR')
+rects1 = ax1[0].bar(index, mc_rms_psi_1, bar_width, yerr=mc_rms_psi_1_std, 
+                    alpha=opacity, color=color_LQR, capsize=10, label='LQR',
+                    edgecolor='k')
 
 rl_rms_psi_1 = [MU_rms_rl1_psi_1, MU_rms_rl2_psi_1, MU_rms_rl3_psi_1, MU_rms_rl4_psi_1, MU_rms_rl5_psi_1]
 rl_rms_psi_1_std = [SIGMA_rms_rl1_psi_1, SIGMA_rms_rl2_psi_1, SIGMA_rms_rl3_psi_1, 
                     SIGMA_rms_rl4_psi_1, SIGMA_rms_rl5_psi_1]
 
-rects2 = ax1[0].bar(index+bar_width, rl_rms_psi_1, bar_width, yerr=rl_rms_psi_1_std, 
-                    alpha=opacity, color='b', capsize=10, label='DDPG')
+rects2 = ax1[0].bar(index+bar_width, rl_rms_psi_1, bar_width, 
+                    yerr=rl_rms_psi_1_std, alpha=opacity, color=color_DDPG, 
+                    capsize=10, label='DDPG', edgecolor='k')
 ax1[0].legend()
 
 print()
@@ -199,15 +206,17 @@ MU_rms_mc5_psi_2, SIGMA_rms_mc5_psi_2, MU_rms_rl5_psi_2, SIGMA_rms_rl5_psi_2 = \
 mc_rms_psi_2 = [MU_rms_mc1_psi_2, MU_rms_mc2_psi_2, MU_rms_mc3_psi_2, MU_rms_mc4_psi_2, MU_rms_mc5_psi_2]
 mc_rms_psi_2_std = [SIGMA_rms_mc1_psi_2, SIGMA_rms_mc2_psi_2, SIGMA_rms_mc3_psi_2, 
                     SIGMA_rms_mc4_psi_2, SIGMA_rms_mc5_psi_2]
-rects3 = ax1[1].bar(index, mc_rms_psi_2, bar_width, yerr=mc_rms_psi_2_std, alpha=opacity, 
-                    color='k', capsize=10, label='LQR')
+rects3 = ax1[1].bar(index, mc_rms_psi_2, bar_width, yerr=mc_rms_psi_2_std, 
+                    alpha=opacity, color=color_LQR, capsize=10, label='LQR',
+                    edgecolor='k')
 
 rl_rms_psi_2 = [MU_rms_rl1_psi_2, MU_rms_rl2_psi_2, MU_rms_rl3_psi_2, MU_rms_rl4_psi_2, MU_rms_rl5_psi_2]
 rl_rms_psi_2_std = [SIGMA_rms_rl1_psi_2, SIGMA_rms_rl2_psi_2, SIGMA_rms_rl3_psi_2, 
                     SIGMA_rms_rl4_psi_2, SIGMA_rms_rl5_psi_2]
 
-rects4 = ax1[1].bar(index+bar_width, rl_rms_psi_2, bar_width, yerr=rl_rms_psi_2_std, 
-                    alpha=opacity, color='b', capsize=10, label='DDPG')
+rects4 = ax1[1].bar(index+bar_width, rl_rms_psi_2, bar_width, 
+                    yerr=rl_rms_psi_2_std, alpha=opacity, color=color_DDPG, 
+                    capsize=10, label='DDPG', edgecolor='k')
 
 print()
 print('***************************')
@@ -248,20 +257,23 @@ MU_rms_mc5_d2, SIGMA_rms_mc5_d2, MU_rms_rl5_d2, SIGMA_rms_rl5_d2 = \
 mc_rms_d2 = [MU_rms_mc1_d2, MU_rms_mc2_d2, MU_rms_mc3_d2, MU_rms_mc4_d2, MU_rms_mc5_d2]
 mc_rms_d2_std = [SIGMA_rms_mc1_d2, SIGMA_rms_mc2_d2, SIGMA_rms_mc3_d2, 
                     SIGMA_rms_mc4_d2, SIGMA_rms_mc5_d2]
-rects5 = ax1[2].bar(index, mc_rms_d2, bar_width, yerr=mc_rms_d2_std, alpha=opacity, 
-                    color='k', capsize=10, label='LQR')
+rects5 = ax1[2].bar(index, mc_rms_d2, bar_width, yerr=mc_rms_d2_std, 
+                    alpha=opacity, color=color_LQR, capsize=10, label='LQR',
+                    edgecolor='k')
 
 rl_rms_d2 = [MU_rms_rl1_d2, MU_rms_rl2_d2, MU_rms_rl3_d2, MU_rms_rl4_d2, MU_rms_rl5_d2]
 rl_rms_d2_std = [SIGMA_rms_rl1_d2, SIGMA_rms_rl2_d2, SIGMA_rms_rl3_d2, 
                     SIGMA_rms_rl4_d2, SIGMA_rms_rl5_d2]
 
 rects6 = ax1[2].bar(index+bar_width, rl_rms_d2, bar_width, yerr=rl_rms_d2_std, 
-                    alpha=opacity, color='b', capsize=10, label='DDPG')
+                    alpha=opacity, color=color_DDPG, capsize=10, label='DDPG',
+                    edgecolor='k')
 
 plt.tight_layout()
+plt.savefig('stat_rm_rms.eps', format='eps', dpi=1000)
 
 # Max
-fig2, ax2 = plt.subplots(1, 3, figsize=(20, 10), sharex=True)
+fig2, ax2 = plt.subplots(1, 3, figsize=size_fig, sharex=True)
 index = np.arange(5)
 bar_width = 0.35 / 2
 opacity = 0.8
@@ -319,15 +331,16 @@ MU_max_mc5_psi_1, SIGMA_max_mc5_psi_1, MU_max_rl5_psi_1, SIGMA_max_rl5_psi_1 = \
 mc_max_psi_1 = [MU_max_mc1_psi_1, MU_max_mc2_psi_1, MU_max_mc3_psi_1, MU_max_mc4_psi_1, MU_max_mc5_psi_1]
 mc_max_psi_1_std = [SIGMA_max_mc1_psi_1, SIGMA_max_mc2_psi_1, SIGMA_max_mc3_psi_1, 
                     SIGMA_max_mc4_psi_1, SIGMA_max_mc5_psi_1]
-rects7 = ax2[0].bar(index, mc_max_psi_1, bar_width, yerr=mc_max_psi_1_std, alpha=opacity, 
-                    color='k', capsize=10, label='LQR')
+rects7 = ax2[0].bar(index, mc_max_psi_1, bar_width, yerr=mc_max_psi_1_std, 
+                    alpha=opacity, color=color_LQR, capsize=10, label='LQR',
+                    edgecolor='k')
 
 rl_max_psi_1 = [MU_max_rl1_psi_1, MU_max_rl2_psi_1, MU_max_rl3_psi_1, MU_max_rl4_psi_1, MU_max_rl5_psi_1]
 rl_max_psi_1_std = [SIGMA_max_rl1_psi_1, SIGMA_max_rl2_psi_1, SIGMA_max_rl3_psi_1, 
                     SIGMA_max_rl4_psi_1, SIGMA_max_rl5_psi_1]
 
-rects8 = ax2[0].bar(index+bar_width, rl_max_psi_1, bar_width, yerr=rl_max_psi_1_std, 
-                    alpha=opacity, color='b', capsize=10, label='DDPG')
+rects8 = ax2[0].bar(index+bar_width, rl_max_psi_1, bar_width, 
+                    yerr=rl_max_psi_1_std, alpha=opacity, color=color_DDPG,                         capsize=10, label='DDPG', edgecolor='k')
 
 print()
 print('***************************')
@@ -367,15 +380,17 @@ MU_max_mc5_psi_2, SIGMA_max_mc5_psi_2, MU_max_rl5_psi_2, SIGMA_max_rl5_psi_2 = \
 mc_max_psi_2 = [MU_max_mc1_psi_2, MU_max_mc2_psi_2, MU_max_mc3_psi_2, MU_max_mc4_psi_2, MU_max_mc5_psi_2]
 mc_max_psi_2_std = [SIGMA_max_mc1_psi_2, SIGMA_max_mc2_psi_2, SIGMA_max_mc3_psi_2, 
                     SIGMA_max_mc4_psi_2, SIGMA_max_mc5_psi_2]
-rects9 = ax2[1].bar(index, mc_max_psi_2, bar_width, yerr=mc_max_psi_2_std, alpha=opacity, 
-                    color='k', capsize=10, label='LQR')
+rects9 = ax2[1].bar(index, mc_max_psi_2, bar_width, yerr=mc_max_psi_2_std, 
+                    alpha=opacity, color=color_LQR, capsize=10, label='LQR',
+                    edgecolor='k')
 
 rl_max_psi_2 = [MU_max_rl1_psi_2, MU_max_rl2_psi_2, MU_max_rl3_psi_2, MU_max_rl4_psi_2, MU_max_rl5_psi_2]
 rl_max_psi_2_std = [SIGMA_max_rl1_psi_2, SIGMA_max_rl2_psi_2, SIGMA_max_rl3_psi_2, 
                     SIGMA_max_rl4_psi_2, SIGMA_max_rl5_psi_2]
 
-rects10 = ax2[1].bar(index+bar_width, rl_max_psi_2, bar_width, yerr=rl_max_psi_2_std, 
-                    alpha=opacity, color='b', capsize=10, label='DDPG')
+rects10 = ax2[1].bar(index+bar_width, rl_max_psi_2, bar_width, 
+                    yerr=rl_max_psi_2_std, alpha=opacity, color=color_DDPG, 
+                    capsize=10, label='DDPG', edgecolor='k')
 
 print()
 print('***************************')
@@ -415,21 +430,24 @@ MU_max_mc5_d2, SIGMA_max_mc5_d2, MU_max_rl5_d2, SIGMA_max_rl5_d2 = \
 mc_max_d2 = [MU_max_mc1_d2, MU_max_mc2_d2, MU_max_mc3_d2, MU_max_mc4_d2, MU_max_mc5_d2]
 mc_max_d2_std = [SIGMA_max_mc1_d2, SIGMA_max_mc2_d2, SIGMA_max_mc3_d2, 
                     SIGMA_max_mc4_d2, SIGMA_max_mc5_d2]
-rects11 = ax2[2].bar(index, mc_max_d2, bar_width, yerr=mc_max_d2_std, alpha=opacity, 
-                    color='k', capsize=10, label='LQR')
+rects11 = ax2[2].bar(index, mc_max_d2, bar_width, yerr=mc_max_d2_std, 
+                    alpha=opacity, color=color_LQR, capsize=10, label='LQR',
+                    edgecolor='k')
 
 rl_max_d2 = [MU_max_rl1_d2, MU_max_rl2_d2, MU_max_rl3_d2, MU_max_rl4_d2, MU_max_rl5_d2]
 rl_max_d2_std = [SIGMA_max_rl1_d2, SIGMA_max_rl2_d2, SIGMA_max_rl3_d2, 
                     SIGMA_max_rl4_d2, SIGMA_max_rl5_d2]
 
 rects12 = ax2[2].bar(index+bar_width, rl_max_d2, bar_width, yerr=rl_max_d2_std, 
-                    alpha=opacity, color='b', capsize=10, label='DDPG')
+                    alpha=opacity, color=color_DDPG, capsize=10, label='DDPG',
+                    edgecolor='k')
 
 plt.tight_layout()
 ax2[0].legend()
+plt.savefig('stat_rm_max.eps', format='eps', dpi=1000)
 
 # Goal
-fig3, ax3 = plt.subplots(1, 2, figsize=(20, 10), sharex=True)
+fig3, ax3 = plt.subplots(1, 2, figsize=size_fig, sharex=True)
 index = np.arange(5)
 bar_width = 0.35 / 2
 opacity = 0.8
@@ -483,15 +501,17 @@ MU_mc5_min_d, SIGMA_mc5_min_d, MU_rl5_min_d, SIGMA_rl5_min_d = \
 mc_min_d = [MU_mc1_min_d, MU_mc2_min_d, MU_mc3_min_d, MU_mc4_min_d, MU_mc5_min_d]
 mc_min_d_std = [SIGMA_mc1_min_d, SIGMA_mc2_min_d, SIGMA_mc3_min_d, 
                     SIGMA_mc4_min_d, SIGMA_mc5_min_d]
-rects13 = ax3[0].bar(index, mc_min_d, bar_width, yerr=mc_min_d_std, alpha=opacity, 
-                    color='k', capsize=10, label='LQR')
+rects13 = ax3[0].bar(index, mc_min_d, bar_width, yerr=mc_min_d_std, 
+                    alpha=opacity, color=color_LQR, capsize=10, label='LQR',
+                    edgecolor='k')
 
 rl_min_d = [MU_rl1_min_d, MU_rl2_min_d, MU_rl3_min_d, MU_rl4_min_d, MU_rl5_min_d]
 rl_min_d_std = [SIGMA_rl1_min_d, SIGMA_rl2_min_d, SIGMA_rl3_min_d, 
                     SIGMA_rl4_min_d, SIGMA_rl5_min_d]
 
 rects14 = ax3[0].bar(index+bar_width, rl_min_d, bar_width, yerr=rl_min_d_std, 
-                    alpha=opacity, color='b', capsize=10, label='DDPG')
+                    alpha=opacity, color=color_DDPG, capsize=10, label='DDPG',
+                    edgecolor='k')
 
 print()
 print('***************************')
@@ -531,18 +551,21 @@ MU_mc5_min_psi, SIGMA_mc5_min_psi, MU_rl5_min_psi, SIGMA_rl5_min_psi = \
 mc_min_psi = [MU_mc1_min_psi, MU_mc2_min_psi, MU_mc3_min_psi, MU_mc4_min_psi, MU_mc5_min_psi]
 mc_min_psi_std = [SIGMA_mc1_min_psi, SIGMA_mc2_min_psi, SIGMA_mc3_min_psi, 
                     SIGMA_mc4_min_psi, SIGMA_mc5_min_psi]
-rects13 = ax3[1].bar(index, mc_min_psi, bar_width, yerr=mc_min_psi_std, alpha=opacity, 
-                    color='k', capsize=10, label='LQR')
+rects13 = ax3[1].bar(index, mc_min_psi, bar_width, yerr=mc_min_psi_std, 
+                    alpha=opacity, color=color_LQR, capsize=10, label='LQR',
+                    edgecolor='k')
 
 rl_min_psi = [MU_rl1_min_psi, MU_rl2_min_psi, MU_rl3_min_psi, MU_rl4_min_psi, MU_rl5_min_psi]
 rl_min_psi_std = [SIGMA_rl1_min_psi, SIGMA_rl2_min_psi, SIGMA_rl3_min_psi, 
                     SIGMA_rl4_min_psi, SIGMA_rl5_min_psi]
 
-rects14 = ax3[1].bar(index+bar_width, rl_min_psi, bar_width, yerr=rl_min_psi_std, 
-                    alpha=opacity, color='b', capsize=10, label='DDPG')
+rects14 = ax3[1].bar(index+bar_width, rl_min_psi, bar_width, 
+                    yerr=rl_min_psi_std, alpha=opacity, color=color_DDPG, 
+                    capsize=10, label='DDPG', edgecolor='k')
 
 plt.tight_layout()
 ax3[0].legend()
+plt.savefig('stat_rm_goal.eps', format='eps', dpi=1000)
 
 # Histogram
 '''n_bins = 40
