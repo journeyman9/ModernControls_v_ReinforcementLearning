@@ -17,18 +17,18 @@ import select
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 
-SEED = 0
-SEED_ID = [0]
+SEED = 9
+SEED_ID = [1]
 LABEL = 'transfer_3_to_25'
 
 PARAM_LABEL = 'wheelbase'
-PARAMS = [12.192, 11.192, 10.192, 9.192, 8.192]
+PARAMS = [8.192, 9.192, 10.192, 11.192, 12.192]
 
 #PARAM_LABEL = 'hitch'
-#PARAMS = [-0.23, -0.26, -0.29, 0.00, 0.29]
+#PARAMS = [0.29, 0.00, -0.29, -0.26, -0.23]
 
 #PARAM_LABEL = 'velocity'
-#PARAMS = [-1.118, -1.564, -2.012, -2.459, -2.906]
+#PARAMS = [-2.906, -2.459, -2.012, -1.564, -1.118]
 K = np.array([-27.606229206749300, 99.829605935742920, -7.853981633974539]) 
 DEMONSTRATIONS = 100
 
@@ -253,7 +253,7 @@ if __name__ == '__main__':
                                   '# max_psi_1: {:.3f}\n'.format(max_mc_psi_1[demo]) +
                                   '# max_psi_2: {:.3f}\n'.format(max_mc_psi_2[demo]) +
                                   '# max_d2: {:.3f}\n'.format(max_mc_d2[demo]) +
-                                  '# reward: {:.3f}\n'.format(r) + 
+                                  '# reward: {:.3f}\n\n'.format(r) + 
                                   '# q0: {}\n'.format(q0) + 
                                   '# qg: {}\n\n'.format(qg))
                 

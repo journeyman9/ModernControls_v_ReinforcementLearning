@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 import sys
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib import rcParams
 
 def get_param(filename):
     para_dic = {}
@@ -34,6 +37,7 @@ except:
     rl_metrics = get_param('./' + folder_name + '/rlFalse.txt')
 
 plt.rcParams.update({'font.size':16})
+rcParams['axes.labelpad'] = 10
 size_fig = (10, 10)
 color_LQR = 'g'
 color_DDPG = 'b'
@@ -126,7 +130,7 @@ else:
     mc_goal_flag = 0.0
 
 mc_goal = [mc_goal_flag, float(mc_metrics['min_d']), 
-           float(mc_metrics['min_psi'])]
+           abs(float(mc_metrics['min_psi']))]
 rects1 = plt.bar(index, mc_goal, bar_width, alpha=opacity, color=color_LQR, 
                  label='LQR', edgecolor='k')
 
@@ -136,7 +140,7 @@ else:
     rl_goal_flag = 0.0
 
 rl_goal = [rl_goal_flag, float(rl_metrics['min_d']), 
-           float(rl_metrics['min_psi'])]
+           abs(float(rl_metrics['min_psi']))]
 rects2 = plt.bar(index+bar_width, rl_goal, bar_width, alpha=opacity, 
                  color=color_DDPG, label='DDPG', edgecolor='k')
 plt.ylabel('Criteria')
@@ -145,5 +149,17 @@ plt.legend()
 plt.tight_layout()
 
 plt.savefig('single_criteria.eps', format='eps', dpi=1000)
+
+## 3D surface of states and Q
+fig_q = plt.figure(figsize=(20, 10))
+ax_q = Axes3D(fig_q)
+surf_q = ax_q.plot_trisurf(df_rl.rl_d2, df_rl.rl_psi_2, df_rl.rl_q, 
+                         cmap='viridis', linewidths=0.2)
+fig_q.colorbar(surf_q, shrink=0.5, aspect=5)
+ax_q.set_xlabel(r'$d2_{min} [m]$')
+ax_q.set_ylabel(r'$\psi2_{min} [rad]$')
+ax_q.set_zlabel('Q')
+
+plt.savefig('Q_surface.eps', format='eps', dpi=1000)
 
 plt.show()

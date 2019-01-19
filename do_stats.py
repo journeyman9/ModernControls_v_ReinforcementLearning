@@ -17,9 +17,9 @@ import pdb
 # mc_min_d, mc_min_psi
 # rl_min_d, rl_min_psi
 
-PARAMS = [12.192, 11.192, 10.192, 9.192, 8.192]
-#PARAMS = [-0.23, -0.26, -0.29, 0.00, 0.29]
-#PARAMS = [-1.118, -1.564, -2.012, -2.459, -2.906]
+PARAMS = [8.192, 9.192, 10.192, 11.192, 12.192]
+#PARAMS = [0.29, 0.00, -0.29, -0.26, -0.23]
+#PARAMS = [-2.906, -2.459, -2.012, -1.564, -1.118]
 
 foldername = sys.argv[1]
 metrics1 = pd.read_csv('./' + foldername + 'stat_me_' + foldername.strip('/') + '_' + 
