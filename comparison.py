@@ -18,8 +18,8 @@ import scipy.stats as stats
 import matplotlib.pyplot as plt
 
 SEED = 9
-SEED_ID = [1]
-LABEL = 'transfer_3_to_25'
+SEED_ID = [12]
+LABEL = 'transfer_25_to_random'
 
 PARAM_LABEL = 'wheelbase'
 PARAMS = [8.192, 9.192, 10.192, 11.192, 12.192]

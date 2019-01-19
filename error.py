@@ -41,6 +41,7 @@ rcParams['axes.labelpad'] = 10
 size_fig = (10, 10)
 color_LQR = 'g'
 color_DDPG = 'b'
+color_map = 'viridis'
 
 ## MC Plots
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=size_fig, sharex=True)
@@ -154,12 +155,46 @@ plt.savefig('single_criteria.eps', format='eps', dpi=1000)
 fig_q = plt.figure(figsize=(20, 10))
 ax_q = Axes3D(fig_q)
 surf_q = ax_q.plot_trisurf(df_rl.rl_d2, df_rl.rl_psi_2, df_rl.rl_q, 
-                         cmap='viridis', linewidths=0.2)
+                         cmap=color_map, linewidths=0.2)
 fig_q.colorbar(surf_q, shrink=0.5, aspect=5)
 ax_q.set_xlabel(r'$d2_{min} [m]$')
 ax_q.set_ylabel(r'$\psi2_{min} [rad]$')
 ax_q.set_zlabel('Q')
 
 plt.savefig('Q_surface.eps', format='eps', dpi=1000)
+
+## 3D surface of states and LQR action
+lqr_a = df_mc['mc_a'].apply(lambda x: np.fromstring(
+                               x.replace('\n','')
+                                .replace('[','')
+                                .replace(']','')
+                                .replace('  ',' '), sep=' ')) 
+for i in range(len(lqr_a.values)):
+    lqr_a[i] = lqr_a[i][0]
+
+lqr_a = pd.to_numeric(lqr_a)
+fig_lqra = plt.figure(figsize=(20, 10))
+ax_lqra = Axes3D(fig_lqra)
+surf_lqra = ax_lqra.plot_trisurf(df_mc.mc_d2, df_mc.mc_psi_2, lqr_a.values, 
+                         cmap=color_map, linewidths=0.2)
+fig_lqra.colorbar(surf_lqra, shrink=0.5, aspect=5)
+ax_lqra.set_xlabel(r'$d2_{min} [m]$')
+ax_lqra.set_ylabel(r'$\psi2_{min} [rad]$')
+ax_lqra.set_zlabel('LQR action [rad]')
+
+plt.savefig('LQR_a_surface.eps', format='eps', dpi=1000)
+
+
+## 3D surface of states and DDPG action
+fig_ddpga = plt.figure(figsize=(20, 10))
+ax_ddpga = Axes3D(fig_ddpga)
+surf_ddpga = ax_ddpga.plot_trisurf(df_rl.rl_d2, df_rl.rl_psi_2, df_rl.rl_a, 
+                         cmap=color_map, linewidths=0.2)
+fig_ddpga.colorbar(surf_ddpga, shrink=0.5, aspect=5)
+ax_ddpga.set_xlabel(r'$d2_{min} [m]$')
+ax_ddpga.set_ylabel(r'$\psi2_{min} [rad]$')
+ax_ddpga.set_zlabel('DDPG action [rad]')
+
+plt.savefig('DDPG_a_surface.eps', format='eps', dpi=1000)
 
 plt.show()
