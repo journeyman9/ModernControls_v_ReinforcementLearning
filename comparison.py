@@ -18,8 +18,8 @@ import scipy.stats as stats
 import matplotlib.pyplot as plt
 
 SEED = 9
-SEED_ID = [12]
-LABEL = 'transfer_25_to_random'
+SEED_ID = [1]
+LABEL = 'transfer_3_to_25'
 
 PARAM_LABEL = 'wheelbase'
 PARAMS = [8.192, 9.192, 10.192, 11.192, 12.192]
@@ -59,6 +59,7 @@ def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
             print()
             print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
             print("LQR")
+            env.tog ^= 1
             for key, value in info.items():
                 if value:
                     print(key, value)
@@ -81,7 +82,7 @@ def test_rl(env, policy, q_value, state_a, state_c, action, train_phase_a, train
     done = False
     q0_ = q0.copy()
     qg_ = qg.copy()
-    if env.v < 0:
+    if env.v1x < 0:
         q0_[2] -= np.pi
         qg_[2] -= np.pi
     q0_[2] = np.degrees(q0_[2])
@@ -110,6 +111,7 @@ def test_rl(env, policy, q_value, state_a, state_c, action, train_phase_a, train
         if done:
             print()
             print("DDPG")
+            env.tog ^= 1
             for key, value in info.items():
                 if value:
                     print(key, value)
@@ -140,14 +142,14 @@ if __name__ == '__main__':
     env = gym.make('TruckBackerUpper-v0').unwrapped
     #env.manual_params(L2=12.192, h=-0.23)
     #env.manual_velocity(-25.0)
-    np.random.seed(SEED)
-    tf.set_random_seed(SEED)
-    env.seed(SEED)
-    
     start_rendering = False
+    env.tog ^= 1
          
     for param_idx in range(len(PARAMS)):
         ''' ''' 
+        np.random.seed(SEED)
+        tf.set_random_seed(SEED)
+        env.seed(SEED)
         if PARAM_LABEL == 'wheelbase':
             env.manual_params(L2=PARAMS[param_idx], h=-0.29)
         elif PARAM_LABEL == 'hitch':
