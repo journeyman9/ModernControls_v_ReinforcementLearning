@@ -150,11 +150,11 @@ if __name__ == '__main__':
     #env.manual_velocity(-25.0)
     start_rendering = False
     env.tog ^= 1
+    lesson_plan = []
     
     if len(sys.argv) >=2:
         with open(sys.argv[1], newline='') as csvfile:
             readCSV = csv.reader(csvfile, delimiter='\n')
-            lesson_plan = []
             for row in readCSV:
                 if row[0].startswith('#'):
                     continue
