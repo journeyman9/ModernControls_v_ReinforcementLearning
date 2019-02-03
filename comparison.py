@@ -16,6 +16,8 @@ import os
 import select
 import scipy.stats as stats
 import matplotlib.pyplot as plt
+import ast
+
 
 SEED = 9
 SEED_ID = [1]
@@ -33,8 +35,12 @@ K = np.array([-27.606229206749300, 99.829605935742920, -7.853981633974539])
 DEMONSTRATIONS = 100
 
 def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
-            start_rendering): 
+            start_rendering, lesson_idx): 
     done = False
+    if len(lesson_plan) > 0:
+        course = lesson_plan[lesson_idx]
+        env.manual_course(course[0], course[1])
+        lesson_idx += 1
     s = env.reset()
     q0 = env.q0
     qg = env.qg
@@ -74,7 +80,7 @@ def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
         s = s_
         total_reward += r
         steps += 1
-    return total_reward, info, q0, qg, start_rendering
+    return total_reward, info, q0, qg, start_rendering, lesson_idx
 
 def test_rl(env, policy, q_value, state_a, state_c, action, train_phase_a, train_phase_c, sess, 
             rl_psi_1_log, rl_psi_2_log, rl_d2_log, rl_t_log, rl_a_log, rl_q_log, 
@@ -144,12 +150,27 @@ if __name__ == '__main__':
     #env.manual_velocity(-25.0)
     start_rendering = False
     env.tog ^= 1
+    
+    if len(sys.argv) >=2:
+        with open(sys.argv[1], newline='') as csvfile:
+            readCSV = csv.reader(csvfile, delimiter='\n')
+            lesson_plan = []
+            for row in readCSV:
+                if row[0].startswith('#'):
+                    continue
+                else:
+                    lesson_plan.append(ast.literal_eval(row[0]))
+            print('~~~~~~~~~~~~~~~~~~~~~')
+            print('Lesson Planned')
+            print('~~~~~~~~~~~~~~~~~~~~~')
+        DEMONSTRATIONS = len(lesson_plan)
          
     for param_idx in range(len(PARAMS)):
         ''' ''' 
         np.random.seed(SEED)
         tf.set_random_seed(SEED)
         env.seed(SEED)
+        lesson_idx = 0
         if PARAM_LABEL == 'wheelbase':
             env.manual_params(L2=PARAMS[param_idx], h=-0.29)
         elif PARAM_LABEL == 'hitch':
@@ -204,9 +225,9 @@ if __name__ == '__main__':
             mc_d2_log = []
             mc_t_log = []
             mc_a_log = []
-            r, info, q0, qg, start_rendering = test_mc(
+            r, info, q0, qg, start_rendering, lesson_idx = test_mc(
                             env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, 
-                            mc_d2_log, mc_a_log, start_rendering)
+                            mc_d2_log, mc_a_log, start_rendering, lesson_idx)
 
             rms_mc_psi_1.append(rms(mc_psi_1_log))
             rms_mc_psi_2.append(rms(mc_psi_2_log))
