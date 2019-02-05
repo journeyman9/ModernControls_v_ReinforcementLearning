@@ -197,4 +197,57 @@ ax_ddpga.set_zlabel('DDPG action [rad]')
 
 plt.savefig('DDPG_a_surface.eps', format='eps', dpi=1000)
 
+# Action over time
+
+## MC Plots
+ce_fig, (ce_ax1, ce_ax2, ce_ax3) = plt.subplots(3, 1, figsize=size_fig, 
+                                                sharex=True)
+
+ce_ax1.plot(df_mc['time'], np.degrees(lqr_a), color_LQR, 
+            label='LQR')
+ce_ax1.set_ylabel(r'$\delta [\degree]$')
+
+lqr_effort = np.zeros((len(lqr_a)))
+lqr_rate = np.zeros((len(lqr_a)))
+for i, effort_a in enumerate(lqr_a):
+    if i == 0:
+        lqr_effort[i] = abs(effort_a)
+        lqr_rate[i] = effort_a
+    else:
+        lqr_effort[i] = abs(effort_a - lqr_a[i-1])
+        lqr_rate[i] = effort_a - lqr_a[i-1]
+
+ce_ax2.plot(df_mc['time'], np.degrees(lqr_rate) / .08, color_LQR)
+ce_ax2.set_ylabel(r'$\dot{\delta} [\frac{\degree}{s}]$')
+ce_ax3.plot(df_mc['time'], np.degrees(lqr_effort), color_LQR)
+ce_ax3.set_ylabel(r'Control Effort $[\degree]$')
+ce_ax3.set_xlabel('time [s]')
+
+## RL Plots
+ce_ax1.plot(df_rl['time'], np.degrees(df_rl['rl_a']), color_DDPG, label='DDPG')
+
+ddpg_effort = np.zeros((len(df_rl['rl_a'])))
+ddpg_rate = np.zeros((len(df_rl['rl_a'])))
+for i, effort_a in enumerate(df_rl['rl_a']):
+    if i == 0:
+        ddpg_effort[i] = abs(effort_a)
+        ddpg_rate[i] = effort_a
+    else:
+        ddpg_effort[i] = abs(effort_a - df_rl['rl_a'].iloc[i-1])
+        ddpg_rate[i] = effort_a - df_rl['rl_a'].iloc[i-1]
+
+ce_ax2.plot(df_rl['time'], np.degrees(ddpg_rate) / .08, color_DDPG)
+ce_ax3.plot(df_rl['time'], np.degrees(ddpg_effort), color_DDPG)
+
+## 0 line
+t = int(float(mc_metrics['t']))
+ce_ax1.plot(range(t), 0*np.arange(t), 'r--')
+ce_ax2.plot(range(t), 0*np.arange(t), 'r--')
+ce_ax3.plot(range(t), 0*np.arange(t), 'r--')
+
+ce_ax1.legend(loc='lower left', bbox_to_anchor=(0.0, 1.01), ncol=1, 
+           borderaxespad=0, frameon=False)
+
+plt.savefig('control_effort.eps', format='eps', dpi=1000)
+
 plt.show()

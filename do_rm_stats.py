@@ -58,6 +58,8 @@ metrics5 = metrics5[metrics5["mc_goal_flag"] == True]
 metrics5 = metrics5[metrics5["rl_goal_flag"] == True]
 metrics5 = metrics5[:100]
 
+print("Number of consistent runs between LQR and DDPG: ", len(metrics5))
+
 def welch_test(data1, data2, alpha=0.05, tail=2, name1='mu_1', name2='mu_2'):
     data1 = data1.squeeze()
     data2 = data2.squeeze()
