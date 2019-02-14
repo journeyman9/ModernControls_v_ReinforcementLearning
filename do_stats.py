@@ -567,3 +567,82 @@ ax4[1].set_xlabel(r'rms $\psi_{1} [rad]$')'''
 # rl_min_d, rl_min_psi
 
 plt.show()
+
+
+## Percent error printouts between LQR and DDPG
+def perce(experimental, theoretical):
+    return ((experimental - theoretical) / abs(theoretical) ) * 100
+
+print()
+print('Percent Error between LQR and DDPG')
+print(PARAMS[0])
+print('psi_2: {:.2f}, y_2: {:.2f}'.format(perce(MU_rms_rl1_psi_2, 
+                                                MU_rms_mc1_psi_2), 
+                                          perce(MU_rms_rl1_d2,
+                                                MU_rms_mc1_d2)))
+
+print()
+print(PARAMS[1])
+print('psi_2: {:.2f}, y_2: {:.2f}'.format(perce(MU_rms_rl2_psi_2, 
+                                                MU_rms_mc2_psi_2), 
+                                          perce(MU_rms_rl2_d2,
+                                                MU_rms_mc2_d2)))
+print()
+print(PARAMS[2])
+print('psi_2: {:.2f}, y_2: {:.2f}'.format(perce(MU_rms_rl3_psi_2, 
+                                                MU_rms_mc3_psi_2), 
+                                          perce(MU_rms_rl3_d2,
+                                                MU_rms_mc3_d2)))
+print()
+print(PARAMS[3])
+print('psi_2: {:.2f}, y_2: {:.2f}'.format(perce(MU_rms_rl4_psi_2, 
+                                                MU_rms_mc4_psi_2), 
+                                          perce(MU_rms_rl4_d2,
+                                                MU_rms_mc4_d2)))
+print()
+print(PARAMS[4])
+print('psi_2: {:.2f}, y_2: {:.2f}'.format(perce(MU_rms_rl5_psi_2, 
+                                                MU_rms_mc5_psi_2), 
+                                          perce(MU_rms_rl5_d2,
+                                                MU_rms_mc5_d2)))
+print()
+print("Percent error from nominal cases")
+print(PARAMS[0])
+print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc1_psi_2,
+                                               MU_rms_mc3_psi_2),
+                                         perce(MU_rms_rl1_psi_2,
+                                               MU_rms_rl3_psi_2)))
+print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc1_d2,
+                                               MU_rms_mc3_d2),
+                                         perce(MU_rms_rl1_d2,
+                                               MU_rms_rl3_d2)))
+print()
+print(PARAMS[1])
+print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc2_psi_2,
+                                               MU_rms_mc3_psi_2),
+                                         perce(MU_rms_rl2_psi_2,
+                                               MU_rms_rl3_psi_2)))
+print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc2_d2,
+                                               MU_rms_mc3_d2),
+                                         perce(MU_rms_rl2_d2,
+                                               MU_rms_rl3_d2)))
+print()
+print(PARAMS[3])
+print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc4_psi_2,
+                                               MU_rms_mc3_psi_2),
+                                         perce(MU_rms_rl4_psi_2,
+                                               MU_rms_rl3_psi_2)))
+print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc4_d2,
+                                               MU_rms_mc3_d2),
+                                         perce(MU_rms_rl4_d2,
+                                               MU_rms_rl3_d2)))
+print()
+print(PARAMS[4])
+print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc5_psi_2,
+                                               MU_rms_mc3_psi_2),
+                                         perce(MU_rms_rl5_psi_2,
+                                               MU_rms_rl3_psi_2)))
+print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc5_d2,
+                                               MU_rms_mc3_d2),
+                                         perce(MU_rms_rl5_d2,
+                                               MU_rms_rl3_d2)))
