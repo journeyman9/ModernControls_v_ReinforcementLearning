@@ -219,6 +219,7 @@ for i, effort_a in enumerate(lqr_a):
 
 ce_ax2.plot(df_mc['time'], np.degrees(lqr_rate) / .08, color_LQR)
 ce_ax2.set_ylabel(r'$\dot{\delta} [\frac{\degree}{s}]$')
+ce_ax2.yaxis.labelpad=-15.0
 ce_ax3.plot(df_mc['time'], np.degrees(lqr_effort), color_LQR)
 ce_ax3.set_ylabel(r'Control Effort $[\degree]$')
 ce_ax3.set_xlabel('time [s]')
