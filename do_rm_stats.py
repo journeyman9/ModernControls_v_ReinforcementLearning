@@ -589,7 +589,6 @@ ax4[1].set_xlabel(r'rms $\psi_{1} [rad]$')'''
 # mc_min_d, mc_min_psi
 # rl_min_d, rl_min_psi
 
-plt.show()
 
 ## Percent error printouts between LQR and DDPG
 def perce(experimental, theoretical):
@@ -630,41 +629,122 @@ print('psi_2: {:.2f}, y_2: {:.2f}'.format(perce(MU_rms_rl5_psi_2,
 print()
 print("Percent error from nominal cases")
 print(PARAMS[0])
-print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc1_psi_2,
-                                               MU_rms_mc3_psi_2),
-                                         perce(MU_rms_rl1_psi_2,
-                                               MU_rms_rl3_psi_2)))
-print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc1_d2,
-                                               MU_rms_mc3_d2),
-                                         perce(MU_rms_rl1_d2,
-                                               MU_rms_rl3_d2)))
+perce_mc1_psi_2 = perce(MU_rms_mc1_psi_2, MU_rms_mc3_psi_2)
+perce_rl1_psi_2 = perce(MU_rms_rl1_psi_2, MU_rms_rl3_psi_2)
+print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce_mc1_psi_2, 
+                                               perce_rl1_psi_2))
+
+perce_mc1_y2 = perce(MU_rms_mc1_d2, MU_rms_mc3_d2)
+perce_rl1_y2 = perce(MU_rms_rl1_d2, MU_rms_rl3_d2)
+print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce_mc1_y2, perce_rl1_y2))
+
 print()
 print(PARAMS[1])
-print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc2_psi_2,
-                                               MU_rms_mc3_psi_2),
-                                         perce(MU_rms_rl2_psi_2,
-                                               MU_rms_rl3_psi_2)))
-print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc2_d2,
-                                               MU_rms_mc3_d2),
-                                         perce(MU_rms_rl2_d2,
-                                               MU_rms_rl3_d2)))
+perce_mc2_psi_2 = perce(MU_rms_mc2_psi_2, MU_rms_mc3_psi_2)
+perce_rl2_psi_2 = perce(MU_rms_rl2_psi_2, MU_rms_rl3_psi_2)
+print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce_mc2_psi_2,
+                                               perce_rl2_psi_2))
+
+perce_mc2_y2 = perce(MU_rms_mc2_d2, MU_rms_mc3_d2)
+perce_rl2_y2 = perce(MU_rms_rl2_d2, MU_rms_rl3_d2)
+print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce_mc2_y2, perce_rl2_y2))
+
 print()
 print(PARAMS[3])
-print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc4_psi_2,
-                                               MU_rms_mc3_psi_2),
-                                         perce(MU_rms_rl4_psi_2,
-                                               MU_rms_rl3_psi_2)))
-print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc4_d2,
-                                               MU_rms_mc3_d2),
-                                         perce(MU_rms_rl4_d2,
-                                               MU_rms_rl3_d2)))
+perce_mc4_psi_2 = perce(MU_rms_mc4_psi_2, MU_rms_mc3_psi_2)
+perce_rl4_psi_2 = perce(MU_rms_rl4_psi_2, MU_rms_rl3_psi_2)
+print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce_mc4_psi_2,
+                                               perce_rl4_psi_2))
+
+perce_mc4_y2 = perce(MU_rms_mc4_d2, MU_rms_mc3_d2)
+perce_rl4_y2 = perce(MU_rms_rl4_d2, MU_rms_rl3_d2)
+print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce_mc4_y2, perce_rl4_y2))
+
 print()
 print(PARAMS[4])
-print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc5_psi_2,
-                                               MU_rms_mc3_psi_2),
-                                         perce(MU_rms_rl5_psi_2,
-                                               MU_rms_rl3_psi_2)))
-print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce(MU_rms_mc5_d2,
-                                               MU_rms_mc3_d2),
-                                         perce(MU_rms_rl5_d2,
-                                               MU_rms_rl3_d2)))
+perce_mc5_psi_2 = perce(MU_rms_mc5_psi_2, MU_rms_mc3_psi_2)
+perce_rl5_psi_2 = perce(MU_rms_rl5_psi_2, MU_rms_rl3_psi_2)
+print('psi_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce_mc5_psi_2,
+                                               perce_rl5_psi_2))
+
+perce_mc5_y2 = perce(MU_rms_mc5_d2, MU_rms_mc3_d2)
+perce_rl5_y2 = perce(MU_rms_rl5_d2, MU_rms_rl3_d2)
+print('y_2 LQR: {:.2f}, DDPG: {:.2f}'.format(perce_mc5_y2, perce_rl5_y2))
+
+## Plot radar chart
+N = len(PARAMS) - 1
+angles = [n / float(N) * 2 * np.pi for n in range(N)]
+angles += angles[:1]
+
+radar_labels = [str(PARAMS[0]) + 'm', str(PARAMS[1]) + 'm', 
+                str(PARAMS[3]) + 'm', str(PARAMS[4]) + 'm']
+
+fig_radar = plt.figure(figsize=(10, 10))
+ax_radar = plt.subplot(1, 1, 1, polar=True)
+
+# psi_2
+ax_radar.set_theta_offset(np.pi / 4)
+ax_radar.set_theta_direction(-1)
+
+plt.xticks(angles[:-1], radar_labels, size=16)
+ax_radar.tick_params(axis='both', which='major', pad=20)
+ax_radar.set_rlabel_position(3)
+plt.yticks([5, 10, 15, 20], ["5%", "10%", "15%", "20%"], color='grey', size=14)
+plt.ylim(0, 25)
+
+#LQR
+perce_lqr_psi_2 = [abs(perce_mc1_psi_2), abs(perce_mc2_psi_2), 
+                   abs(perce_mc4_psi_2), abs(perce_mc5_psi_2)]
+perce_lqr_psi_2 += perce_lqr_psi_2[:1]
+ax_radar.plot(angles, perce_lqr_psi_2, 'g', linewidth=1, linestyle='solid', 
+              label=r"LQR $\psi_{2e}$")
+ax_radar.fill(angles, perce_lqr_psi_2, 'g', alpha=0.1)
+
+#DDPG
+perce_ddpg_psi_2 = [abs(perce_rl1_psi_2), abs(perce_rl2_psi_2), 
+                   abs(perce_rl4_psi_2), abs(perce_rl5_psi_2)]
+perce_ddpg_psi_2 += perce_ddpg_psi_2[:1]
+ax_radar.plot(angles, perce_ddpg_psi_2, 'b', linewidth=1, linestyle='solid', 
+              label=r"DDPG $\psi_{2e}$")
+ax_radar.fill(angles, perce_ddpg_psi_2, 'b', alpha=0.1)
+
+plt.legend(loc='upper right', bbox_to_anchor=(0.3, 0.06))
+
+plt.tight_layout()
+plt.savefig('radar_psi_2.pdf', format='pdf', dpi=1000)
+
+## y2
+fig_radar2 = plt.figure(figsize=(10, 10))
+ax_radar2 = plt.subplot(1, 1, 1, polar=True)
+
+ax_radar2.set_theta_offset(np.pi / 4)
+ax_radar2.set_theta_direction(-1)
+
+plt.xticks(angles[:-1], radar_labels, size=16)
+ax_radar2.tick_params(axis='both', which='major', pad=20)
+ax_radar2.set_rlabel_position(3)
+plt.yticks([5, 10, 15, 20], ["5%", "10%", "15%", "20%"], color='grey', size=14)
+plt.ylim(0, 25)
+
+#LQR
+perce_lqr_y2 = [abs(perce_mc1_y2), abs(perce_mc2_y2), 
+                   abs(perce_mc4_y2), abs(perce_mc5_y2)]
+perce_lqr_y2 += perce_lqr_y2[:1]
+ax_radar2.plot(angles, perce_lqr_y2, 'g', linewidth=1, linestyle='solid', 
+              label=r"LQR $y_{2e}$")
+ax_radar2.fill(angles, perce_lqr_y2, 'g', alpha=0.1)
+
+#DDPG
+perce_ddpg_y2 = [abs(perce_rl1_y2), abs(perce_rl2_y2), 
+                   abs(perce_rl4_y2), abs(perce_rl5_y2)]
+perce_ddpg_y2 += perce_ddpg_y2[:1]
+ax_radar2.plot(angles, perce_ddpg_y2, 'b', linewidth=1, linestyle='solid', 
+              label=r"DDPG $y_{2e}$")
+ax_radar2.fill(angles, perce_ddpg_y2, 'b', alpha=0.1)
+
+plt.legend(loc='upper right', bbox_to_anchor=(0.3, 0.06))
+
+plt.tight_layout()
+plt.savefig('radar_y2.pdf', format='pdf', dpi=1000)
+
+plt.show()
