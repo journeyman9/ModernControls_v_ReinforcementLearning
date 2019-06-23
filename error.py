@@ -157,7 +157,7 @@ ax_q = Axes3D(fig_q)
 surf_q = ax_q.plot_trisurf(df_rl.rl_d2, df_rl.rl_psi_2, df_rl.rl_q, 
                          cmap=color_map, linewidths=0.2)
 fig_q.colorbar(surf_q, shrink=0.5, aspect=5)
-ax_q.set_xlabel(r'$d2_{min} [m]$')
+ax_q.set_xlabel(r'$y2_{min} [m]$')
 ax_q.set_ylabel(r'$\psi2_{min} [rad]$')
 ax_q.set_zlabel('Q')
 
@@ -178,7 +178,7 @@ ax_lqra = Axes3D(fig_lqra)
 surf_lqra = ax_lqra.plot_trisurf(df_mc.mc_d2, df_mc.mc_psi_2, lqr_a.values, 
                          cmap=color_map, linewidths=0.2)
 fig_lqra.colorbar(surf_lqra, shrink=0.5, aspect=5)
-ax_lqra.set_xlabel(r'$d2_{min} [m]$')
+ax_lqra.set_xlabel(r'$y2_{min} [m]$')
 ax_lqra.set_ylabel(r'$\psi2_{min} [rad]$')
 ax_lqra.set_zlabel('LQR action [rad]')
 
@@ -191,7 +191,7 @@ ax_ddpga = Axes3D(fig_ddpga)
 surf_ddpga = ax_ddpga.plot_trisurf(df_rl.rl_d2, df_rl.rl_psi_2, df_rl.rl_a, 
                          cmap=color_map, linewidths=0.2)
 fig_ddpga.colorbar(surf_ddpga, shrink=0.5, aspect=5)
-ax_ddpga.set_xlabel(r'$d2_{min} [m]$')
+ax_ddpga.set_xlabel(r'$y2_{min} [m]$')
 ax_ddpga.set_ylabel(r'$\psi2_{min} [rad]$')
 ax_ddpga.set_zlabel('DDPG action [rad]')
 
