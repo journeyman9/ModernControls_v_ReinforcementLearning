@@ -20,18 +20,25 @@ import ast
 
 
 SEED = 9
-SEED_ID = [1]
-LABEL = 'transfer_3_to_25'
+SEED_ID = [0]
+LABEL = 'lp17_3_to_25'
 
 PARAM_LABEL = 'wheelbase'
 PARAMS = [8.192, 9.192, 10.192, 11.192, 12.192]
 
 #PARAM_LABEL = 'hitch'
-#PARAMS = [0.29, 0.00, -0.29, -0.26, -0.23]
+#PARAMS = [0.228, 0.114, 0.000, -0.114, -0.228]
 
 #PARAM_LABEL = 'velocity'
 #PARAMS = [-2.906, -2.459, -2.012, -1.564, -1.118]
-K = np.array([-27.606229206749300, 99.829605935742920, -7.853981633974539]) 
+
+#PARAM_LABEL = 'sensor_noise'
+#PARAMS = [0.0, .03, .04, .05, .06]
+
+#PARAM_LABEL = 'control_frequency'
+#PARAMS = [0.010, 0.040, 0.080, 0.120, 0.160]
+
+K = np.array([-24.7561, 94.6538, -7.8540]) 
 DEMONSTRATIONS = 100
 
 def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
@@ -177,6 +184,10 @@ if __name__ == '__main__':
             env.manual_params(L2=10.192, h=PARAMS[param_idx])
         elif PARAM_LABEL == 'velocity':
             env.manual_velocity(v=PARAMS[param_idx])
+        elif PARAM_LABEL == 'sensor_noise':
+            env.add_sensor_noise(sn=PARAMS[param_idx])
+        elif PARAM_LABEL == 'control_frequency':
+            env.change_control_freq(dt=PARAMS[param_idx])
         else:
             pass
         ## Modern Controls
