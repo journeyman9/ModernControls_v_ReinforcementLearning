@@ -23,8 +23,8 @@ SEED = 9
 SEED_ID = [0]
 LABEL = 'lp17_3_to_25'
 
-PARAM_LABEL = 'wheelbase'
-PARAMS = [8.192, 9.192, 10.192, 11.192, 12.192]
+#PARAM_LABEL = 'wheelbase'
+#PARAMS = [8.192, 9.192, 10.192, 11.192, 12.192]
 
 #PARAM_LABEL = 'hitch'
 #PARAMS = [0.228, 0.114, 0.000, -0.114, -0.228]
@@ -35,8 +35,8 @@ PARAMS = [8.192, 9.192, 10.192, 11.192, 12.192]
 #PARAM_LABEL = 'sensor_noise'
 #PARAMS = [0.0, .03, .04, .05, .06]
 
-#PARAM_LABEL = 'control_frequency'
-#PARAMS = [0.010, 0.040, 0.080, 0.120, 0.160]
+PARAM_LABEL = 'control_frequency'
+PARAMS = [.001, .010, .080, .400, .500, .600]
 
 K = np.array([-24.7561, 94.6538, -7.8540]) 
 DEMONSTRATIONS = 100
@@ -65,7 +65,17 @@ def test_mc(env, K, mc_t_log, mc_psi_1_log, mc_psi_2_log, mc_d2_log, mc_a_log,
                 print('hide render...')
         if start_rendering:
             env.render()
-        a = np.clip(K.dot(s), env.action_space.low, env.action_space.high)
+        
+        if PARAM_LABEL == 'control_frequency':
+            if (env.sim_i-1) % int(PARAMS[param_idx] / env.dt) == 0:
+                a = np.clip(K.dot(s), env.action_space.low, 
+                            env.action_space.high)
+                a_last = a.copy()
+            else:
+                a = a_last.copy()
+        else:
+            a = np.clip(K.dot(s), env.action_space.low, 
+                        env.action_space.high)
         s_, r, done, info = env.step(a)
         
         if done:
@@ -117,8 +127,17 @@ def test_rl(env, policy, q_value, state_a, state_c, action, train_phase_a, train
                 print('hide render...')
         if start_rendering:
             env.render()
-        a = sess.run(policy, feed_dict={state_a: s.reshape(1, s.shape[0]),
-                                        train_phase_a: False})[0]
+        
+        if PARAM_LABEL == 'control_frequency':
+            if (env.sim_i-1) % int(PARAMS[param_idx] / env.dt) == 0:
+                a = sess.run(policy, feed_dict={state_a: s.reshape(1, 
+                             s.shape[0]),train_phase_a: False})[0]
+                a_last = a.copy()
+            else:
+                a = a_last.copy()
+        else:
+            a = sess.run(policy, feed_dict={state_a: s.reshape(1, s.shape[0]),
+                                            train_phase_a: False})[0]
         s_, r, done, info = env.step(a)
         
         if done:
@@ -187,7 +206,8 @@ if __name__ == '__main__':
         elif PARAM_LABEL == 'sensor_noise':
             env.add_sensor_noise(sn=PARAMS[param_idx])
         elif PARAM_LABEL == 'control_frequency':
-            env.change_control_freq(dt=PARAMS[param_idx])
+            env.dt = .001
+            env.num_steps = int((env.t_final - env.t0)/env.dt) + 1
         else:
             pass
         ## Modern Controls
