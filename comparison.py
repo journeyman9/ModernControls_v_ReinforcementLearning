@@ -36,7 +36,7 @@ LABEL = 'lp17_3_to_25'
 #PARAMS = [0.0, .03, .04, .05, .06]
 
 PARAM_LABEL = 'control_frequency'
-PARAMS = [.001, .010, .080, .400, .500, .600]
+PARAMS = [.001, .010, .080, .400, .600]
 
 K = np.array([-24.7561, 94.6538, -7.8540]) 
 DEMONSTRATIONS = 100
