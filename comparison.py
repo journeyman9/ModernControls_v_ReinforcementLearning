@@ -35,8 +35,11 @@ LABEL = 'lp17_3_to_25'
 #PARAM_LABEL = 'sensor_noise'
 #PARAMS = [0.0, .03, .04, .05, .06]
 
-PARAM_LABEL = 'control_frequency'
-PARAMS = [.001, .010, .080, .400, .600]
+#PARAM_LABEL = 'control_frequency'
+#PARAMS = [.001, .010, .080, .400, .600]
+
+PARAM_LABEL = 'test'
+PARAMS = [0]
 
 K = np.array([-24.7561, 94.6538, -7.8540]) 
 DEMONSTRATIONS = 100
@@ -208,6 +211,8 @@ if __name__ == '__main__':
         elif PARAM_LABEL == 'control_frequency':
             env.dt = .001
             env.num_steps = int((env.t_final - env.t0)/env.dt) + 1
+        elif PARAM_LABEL == 'test':
+            pass
         else:
             pass
         ## Modern Controls
