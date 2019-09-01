@@ -691,8 +691,8 @@ ax_radar.set_theta_direction(-1)
 plt.xticks(angles[:-1], radar_labels, size=16)
 ax_radar.tick_params(axis='both', which='major', pad=20)
 ax_radar.set_rlabel_position(3)
-plt.yticks([5, 10, 15, 20], ["5%", "10%", "15%", "20%"], color='grey', size=14)
-plt.ylim(0, 25)
+plt.yticks([5, 10, 15, 20, 25], ["5%", "10%", "15%", "20%", "25%"], color='grey', size=14)
+plt.ylim(0, 30)
 
 #LQR
 perce_lqr_psi_2 = [abs(perce_mc1_psi_2), abs(perce_mc2_psi_2), 
@@ -725,8 +725,8 @@ ax_radar2.set_theta_direction(-1)
 plt.xticks(angles[:-1], radar_labels, size=16)
 ax_radar2.tick_params(axis='both', which='major', pad=20)
 ax_radar2.set_rlabel_position(3)
-plt.yticks([5, 10, 15, 20], ["5%", "10%", "15%", "20%"], color='grey', size=14)
-plt.ylim(0, 25)
+plt.yticks([5, 10, 15, 20, 25], ["5%", "10%", "15%", "20%", "25%"], color='grey', size=14)
+plt.ylim(0, 30)
 
 #LQR
 perce_lqr_y2 = [abs(perce_mc1_y2), abs(perce_mc2_y2), 

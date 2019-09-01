@@ -49,7 +49,7 @@ fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=size_fig, sharex=True)
 ax1.plot(df_mc['time'], np.degrees(df_mc['mc_psi_1']), color_LQR, label='LQR')
 ax1.set_ylabel(r'$\psi_{1} [\degree]$')
 
-ax2.plot(df_mc['time'], np.degrees(df_mc['mc_psi_1']), color_LQR)
+ax2.plot(df_mc['time'], np.degrees(df_mc['mc_psi_2']), color_LQR)
 ax2.set_ylabel(r'$\psi_{2} [\degree]$')
 
 ax3.plot(df_mc['time'], df_mc['mc_d2'], color_LQR)
