@@ -58,7 +58,7 @@ ax3.set_xlabel('time [s]')
 
 ## RL Plots
 ax1.plot(df_rl['time'], np.degrees(df_rl['rl_psi_1']), color_DDPG, label='DDPG')
-ax2.plot(df_rl['time'], np.degrees(df_rl['rl_psi_1']), color_DDPG)
+ax2.plot(df_rl['time'], np.degrees(df_rl['rl_psi_2']), color_DDPG)
 ax3.plot(df_rl['time'], df_rl['rl_d2'], color_DDPG)
 
 ## 0 line
