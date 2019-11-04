@@ -201,7 +201,7 @@ if __name__ == '__main__':
         env.seed(SEED)
         lesson_idx = 0
         if PARAM_LABEL == 'wheelbase':
-            env.manual_params(L2=PARAMS[param_idx], h=-0.29)
+            env.manual_params(L2=PARAMS[param_idx], h=0.0)
         elif PARAM_LABEL == 'hitch':
             env.manual_params(L2=10.192, h=PARAMS[param_idx])
         elif PARAM_LABEL == 'velocity':
