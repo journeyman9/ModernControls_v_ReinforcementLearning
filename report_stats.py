@@ -52,3 +52,7 @@ print("DDPG Large Dist: {}, {}, {}, {}, {}".format(stats1["rl_dist_too_large"], 
 print()
 print("LQR Large Ang: {}, {}, {}, {}, {}".format(stats1["mc_angle_too_large"], stats2["mc_angle_too_large"], stats3["mc_angle_too_large"], stats4["mc_angle_too_large"], stats5["mc_angle_too_large"]))
 print("DDPG Large Ang: {}, {}, {}, {}, {}".format(stats1["rl_angle_too_large"], stats2["rl_angle_too_large"], stats3["rl_angle_too_large"], stats4["rl_angle_too_large"], stats5["rl_angle_too_large"]))
+
+print()
+print("LQR Out of Bounds: {}, {}, {}, {}, {}".format(stats1["mc_out_of_bounds"], stats2["mc_out_of_bounds"], stats3["mc_out_of_bounds"], stats4["mc_out_of_bounds"], stats5["mc_out_of_bounds"]))
+print("DDPG Out of Bounds: {}, {}, {}, {}, {}".format(stats1["rl_out_of_bounds"], stats2["rl_out_of_bounds"], stats3["rl_out_of_bounds"], stats4["rl_out_of_bounds"], stats5["rl_out_of_bounds"]))
