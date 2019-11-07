@@ -1,10 +1,10 @@
 # ModernControls_v_Reinforcement Learning
 
 These scripts are useful for comparing both controllers in such a way that:
-    - Compare the controllers on the same paths
-    - log each run into organized folders
-    - generate a summary of results
-    - generate figures
+- Compare the controllers on the same paths
+- log each run into organized folders
+- generate a summary of results
+- generate figures
 
 ## Usage
 
